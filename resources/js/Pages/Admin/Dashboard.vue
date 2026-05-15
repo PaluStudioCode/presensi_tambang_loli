@@ -50,26 +50,18 @@ const summaryCards = computed(() => [
     {
         label: 'Total Karyawan',
         value: props.summary.totalEmployees,
-        hint: 'Akun aktif dengan peran karyawan',
-        accent: 'from-slate-900 via-slate-800 to-slate-700 text-white shadow-slate-900/20 dark:from-slate-100 dark:via-slate-200 dark:to-slate-300 dark:text-slate-950 dark:shadow-slate-500/10',
     },
     {
         label: 'Kehadiran Hari Ini',
         value: `${attendanceRate.value}%`,
-        hint: `${props.summary.presentEmployeesToday} dari ${props.summary.totalEmployees} karyawan sudah hadir`,
-        accent: 'from-emerald-500 via-emerald-400 to-teal-300 text-emerald-950 shadow-emerald-500/25',
     },
     {
         label: 'Lembur Menunggu',
         value: props.summary.pendingOvertimes,
-        hint: 'Butuh persetujuan agar operasional tidak tertunda',
-        accent: 'from-amber-300 via-amber-200 to-orange-100 text-amber-950 shadow-amber-500/20',
     },
     {
         label: 'Jam Lembur Disetujui',
         value: `${props.summary.approvedOvertimeHoursThisMonth} jam`,
-        hint: 'Akumulasi lembur disetujui bulan berjalan',
-        accent: 'from-sky-500 via-cyan-400 to-teal-200 text-sky-950 shadow-sky-500/25',
     },
 ]);
 
@@ -77,17 +69,14 @@ const attendanceMetrics = computed(() => [
     {
         label: 'Absen Masuk',
         value: props.attendanceToday.clockedIn,
-        hint: 'Sudah melakukan absensi masuk',
     },
     {
         label: 'Absen Pulang',
         value: props.attendanceToday.clockedOut,
-        hint: 'Sudah menyelesaikan shift',
     },
     {
         label: 'Terlambat',
         value: props.attendanceToday.lateCheckIn,
-        hint: 'Masuk melewati jam kerja',
     },
 ]);
 
@@ -147,6 +136,18 @@ const statusLabel = (status) => ({
     Approved: 'Disetujui',
     Rejected: 'Ditolak',
 }[status] ?? status);
+
+const clockInStatusClass = (status) => {
+    if (status === 'Lambat') {
+        return 'bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-300';
+    }
+
+    if (status === 'Tepat Waktu') {
+        return 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300';
+    }
+
+    return 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300';
+};
 
 const openPhotoModal = (attendance, type) => {
     const src = type === 'in' ? attendance.clock_in_photo : attendance.clock_out_photo;
@@ -236,7 +237,6 @@ const processOvertime = async (id, action) => {
                     >
                         <p class="text-xs uppercase tracking-[0.08em] text-slate-500 dark:text-slate-400">{{ card.label }}</p>
                         <p class="mt-2 text-2xl font-semibold text-slate-900 dark:text-slate-100">{{ card.value }}</p>
-                        <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">{{ card.hint }}</p>
                     </article>
                 </div>
             </section>
@@ -261,7 +261,6 @@ const processOvertime = async (id, action) => {
                         >
                             <p class="text-slate-500 dark:text-slate-400">{{ metric.label }}</p>
                             <p class="mt-1 text-2xl font-semibold text-slate-900 dark:text-slate-100">{{ metric.value }}</p>
-                            <p class="mt-1 text-slate-500 dark:text-slate-400">{{ metric.hint }}</p>
                         </div>
                     </div>
                 </div>
@@ -304,6 +303,7 @@ const processOvertime = async (id, action) => {
                                     <th class="py-2 pe-3 font-medium">Tanggal</th>
                                     <th class="py-2 pe-3 font-medium">Karyawan</th>
                                     <th class="py-2 pe-3 font-medium">Masuk</th>
+                                    <th class="py-2 pe-3 font-medium">Status</th>
                                     <th class="py-2 pe-3 font-medium">Pulang</th>
                                     <th class="py-2 pe-3 font-medium">Lokasi</th>
                                     <th class="py-2 pe-3 font-medium">Foto</th>
@@ -317,6 +317,11 @@ const processOvertime = async (id, action) => {
                                         <p class="text-xs text-slate-500 dark:text-slate-400">{{ attendance.id_number ?? '-' }}</p>
                                     </td>
                                     <td class="py-3 pe-3 whitespace-nowrap">{{ formatTime(attendance.clock_in_at) }}</td>
+                                    <td class="py-3 pe-3 whitespace-nowrap">
+                                        <span class="inline-flex rounded-full px-2 py-1 text-xs font-semibold" :class="clockInStatusClass(attendance.clock_in_status)">
+                                            {{ attendance.clock_in_status ?? '-' }}
+                                        </span>
+                                    </td>
                                     <td class="py-3 pe-3 whitespace-nowrap">{{ formatTime(attendance.clock_out_at) }}</td>
                                     <td class="py-3 pe-3">
                                         <p class="max-w-[220px] truncate" :title="attendance.clock_in_location ?? '-'">Masuk: {{ attendance.clock_in_location ?? '-' }}</p>
@@ -345,7 +350,7 @@ const processOvertime = async (id, action) => {
                                     </td>
                                 </tr>
                                 <tr v-if="recentAttendances.length === 0">
-                                    <td colspan="6" class="py-6 text-center text-slate-500 dark:text-slate-400">Belum ada data presensi.</td>
+                                    <td colspan="7" class="py-6 text-center text-slate-500 dark:text-slate-400">Belum ada data presensi.</td>
                                 </tr>
                             </tbody>
                         </table>

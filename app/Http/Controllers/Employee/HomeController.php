@@ -7,12 +7,12 @@ use App\Models\Attendance;
 use App\Models\Overtime;
 use App\Models\Setting;
 use App\Models\User;
+use App\Support\CapturedPhoto;
+use App\Support\Geo;
 use App\Support\PublicFileUrl;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -88,8 +88,8 @@ class HomeController extends Controller
 
         $attendance->fill([
             'clock_in_at' => now()->format('H:i:s'),
-            'clock_in_photo' => $this->storeCapturedPhoto($payload['photo'], 'attendance/clock-in'),
-            'clock_in_location' => $this->formatLocation($payload['latitude'], $payload['longitude']),
+            'clock_in_photo' => CapturedPhoto::storeDataUrl($payload['photo'], 'attendance/clock-in', 'Foto wajah wajib diambil langsung dari kamera.'),
+            'clock_in_location' => Geo::formatLocation($payload['latitude'], $payload['longitude']),
         ]);
         $attendance->save();
 
@@ -124,8 +124,8 @@ class HomeController extends Controller
 
         $attendance->update([
             'clock_out_at' => now()->format('H:i:s'),
-            'clock_out_photo' => $this->storeCapturedPhoto($payload['photo'], 'attendance/clock-out'),
-            'clock_out_location' => $this->formatLocation($payload['latitude'], $payload['longitude']),
+            'clock_out_photo' => CapturedPhoto::storeDataUrl($payload['photo'], 'attendance/clock-out', 'Foto wajah wajib diambil langsung dari kamera.'),
+            'clock_out_location' => Geo::formatLocation($payload['latitude'], $payload['longitude']),
         ]);
 
         return back()->with('success', 'Absen pulang berhasil disimpan.');
@@ -155,7 +155,7 @@ class HomeController extends Controller
             'planned_start' => $validated['planned_start'],
             'planned_end' => $validated['planned_end'],
             'reason' => $validated['reason'],
-            'overtime_request_photo' => $this->storeCapturedPhoto($validated['request_photo'], 'overtime/request'),
+            'overtime_request_photo' => CapturedPhoto::storeDataUrl($validated['request_photo'], 'overtime/request', 'Foto wajah wajib diambil langsung dari kamera.'),
             'approval_status' => 'Pending',
             'approved_by' => null,
             'actual_start' => null,
@@ -198,7 +198,7 @@ class HomeController extends Controller
 
         $overtime->update([
             'actual_start' => now()->format('H:i:s'),
-            'overtime_start_photo' => $this->storeCapturedPhoto($payload['photo'], 'overtime/start'),
+            'overtime_start_photo' => CapturedPhoto::storeDataUrl($payload['photo'], 'overtime/start', 'Foto wajah wajib diambil langsung dari kamera.'),
         ]);
 
         return back()->with('success', 'Absen mulai lembur berhasil disimpan.');
@@ -241,7 +241,7 @@ class HomeController extends Controller
 
         $overtime->update([
             'actual_end' => now()->format('H:i:s'),
-            'overtime_end_photo' => $this->storeCapturedPhoto($payload['photo'], 'overtime/end'),
+            'overtime_end_photo' => CapturedPhoto::storeDataUrl($payload['photo'], 'overtime/end', 'Foto wajah wajib diambil langsung dari kamera.'),
         ]);
 
         return back()->with('success', 'Absen selesai lembur berhasil disimpan.');
@@ -272,6 +272,8 @@ class HomeController extends Controller
             'longitude' => $setting?->longitude,
             'radius_meters' => $setting?->radius_meters ?? 100,
             'check_in_time' => $setting?->check_in_time ? substr($setting->check_in_time, 0, 5) : null,
+            'check_in_late_tolerance_minutes' => $setting?->checkInLateToleranceMinutes() ?? Setting::DEFAULT_CHECK_IN_LATE_TOLERANCE_MINUTES,
+            'check_in_max_late_minutes' => $setting?->checkInMaxLateMinutes() ?? Setting::DEFAULT_CHECK_IN_MAX_LATE_MINUTES,
             'check_out_time' => $setting?->check_out_time ? substr($setting->check_out_time, 0, 5) : null,
             'is_configured' => filled($setting?->latitude) && filled($setting?->longitude),
         ];
@@ -393,7 +395,7 @@ class HomeController extends Controller
     {
         $officeLatitude = (float) $setting->latitude;
         $officeLongitude = (float) $setting->longitude;
-        $distance = $this->calculateDistanceInMeters($officeLatitude, $officeLongitude, $latitude, $longitude);
+        $distance = Geo::distanceInMeters($officeLatitude, $officeLongitude, $latitude, $longitude);
 
         if ($distance > (float) $setting->radius_meters) {
             throw ValidationException::withMessages([
@@ -412,7 +414,7 @@ class HomeController extends Controller
 
         $now = now();
         $checkInAt = Carbon::parse($now->toDateString().' '.$setting->check_in_time);
-        $checkInDeadline = $checkInAt->copy()->addMinutes(20);
+        $checkInDeadline = $checkInAt->copy()->addMinutes($setting->checkInMaxLateMinutes());
 
         if ($now->lt($checkInAt)) {
             throw ValidationException::withMessages([
@@ -462,57 +464,6 @@ class HomeController extends Controller
                 'overtime' => 'Absen '.$label.' lembur baru bisa dilakukan mulai pukul '.$scheduledAt->format('H:i').' WITA sesuai jam yang diajukan.',
             ]);
         }
-    }
-
-    private function calculateDistanceInMeters(float $lat1, float $lng1, float $lat2, float $lng2): float
-    {
-        $earthRadius = 6371000;
-        $latFrom = deg2rad($lat1);
-        $latTo = deg2rad($lat2);
-        $latDelta = deg2rad($lat2 - $lat1);
-        $lngDelta = deg2rad($lng2 - $lng1);
-
-        $angle = 2 * asin(sqrt(
-            sin($latDelta / 2) ** 2
-            + cos($latFrom) * cos($latTo) * sin($lngDelta / 2) ** 2
-        ));
-
-        return $angle * $earthRadius;
-    }
-
-    private function storeCapturedPhoto(string $photoDataUrl, string $directory): string
-    {
-        if (! preg_match('/^data:image\/(png|jpe?g|webp);base64,(.+)$/', $photoDataUrl, $matches)) {
-            throw ValidationException::withMessages([
-                'photo' => 'Foto wajah wajib diambil langsung dari kamera.',
-            ]);
-        }
-
-        $binary = base64_decode(str_replace(' ', '+', $matches[2]), true);
-
-        if ($binary === false) {
-            throw ValidationException::withMessages([
-                'photo' => 'Format foto tidak valid.',
-            ]);
-        }
-
-        if (strlen($binary) > 5 * 1024 * 1024) {
-            throw ValidationException::withMessages([
-                'photo' => 'Ukuran foto terlalu besar. Coba ambil ulang foto yang lebih ringan.',
-            ]);
-        }
-
-        $extension = $matches[1] === 'jpeg' ? 'jpg' : $matches[1];
-        $path = $directory.'/'.Carbon::now()->format('Y/m/d').'/'.Str::uuid().'.'.$extension;
-
-        Storage::disk('public')->put($path, $binary);
-
-        return $path;
-    }
-
-    private function formatLocation(float $latitude, float $longitude): string
-    {
-        return number_format($latitude, 6, '.', '').','.number_format($longitude, 6, '.', '');
     }
 
     private function assertOvertimeOwnership(Overtime $overtime, int $userId): void

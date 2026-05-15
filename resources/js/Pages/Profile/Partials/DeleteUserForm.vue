@@ -40,9 +40,9 @@ const closeModal = () => {
 <template>
     <section class="space-y-6">
         <header>
-            <h2 class="text-lg font-medium text-gray-900">Hapus Akun</h2>
+            <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100">Hapus Akun</h2>
 
-            <p class="mt-1 text-sm text-gray-600">
+            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
                 Setelah akun dihapus, semua data terkait akan terhapus permanen. Sebelum menghapus akun,
                 pastikan Anda sudah menyimpan data yang masih dibutuhkan.
             </p>
@@ -52,11 +52,11 @@ const closeModal = () => {
 
         <Modal :show="confirmingUserDeletion" @close="closeModal">
             <div class="p-6">
-                <h2 class="text-lg font-medium text-gray-900">
+                <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100">
                     Apakah Anda yakin ingin menghapus akun?
                 </h2>
 
-                <p class="mt-1 text-sm text-gray-600">
+                <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
                     Setelah akun dihapus, semua data terkait akan terhapus permanen. Masukkan password Anda
                     untuk mengonfirmasi penghapusan akun.
                 </p>
@@ -69,7 +69,7 @@ const closeModal = () => {
                         ref="passwordInput"
                         v-model="form.password"
                         type="password"
-                        class="mt-1 block w-3/4"
+                        class="mt-1 block w-full"
                         placeholder="Password"
                         @keyup.enter="deleteUser"
                     />
@@ -77,12 +77,10 @@ const closeModal = () => {
                     <InputError :message="form.errors.password" class="mt-2" />
                 </div>
 
-                <div class="mt-6 flex justify-end">
+                <div class="mt-6 flex flex-wrap justify-end gap-2">
                     <SecondaryButton @click="closeModal"> Batal </SecondaryButton>
 
                     <DangerButton
-                        class="ms-3"
-                        :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"
                         @click="deleteUser"
                     >

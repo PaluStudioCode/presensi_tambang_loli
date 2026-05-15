@@ -43,26 +43,18 @@ const summaryCards = computed(() => [
     {
         label: 'Status Hari Ini',
         value: props.todayAttendance?.clock_out_at ? 'Selesai Shift' : props.todayAttendance?.clock_in_at ? 'Sedang Bekerja' : 'Belum Presensi',
-        hint: props.todayAttendance?.clock_in_at
-            ? `Masuk ${formatTime(props.todayAttendance.clock_in_at)}${props.todayAttendance?.clock_out_at ? `, pulang ${formatTime(props.todayAttendance.clock_out_at)}` : ''}`
-            : 'Presensi belum dilakukan',
     },
     {
         label: 'Jadwal Kerja',
         value: `${props.setting.check_in_time ?? '--:--'} - ${props.setting.check_out_time ?? '--:--'}`,
-        hint: '',
     },
     {
         label: 'Radius Kantor',
-        value: `${props.setting.radius_meters ?? 100} m`,
-        hint: officeReady.value ? 'Siap' : 'Belum diatur',
+        value: officeReady.value ? `${props.setting.radius_meters ?? 100} m` : 'Nonaktif',
     },
     {
         label: 'Lembur Disetujui',
         value: String(props.approvedTodayOvertimes.length),
-        hint: props.approvedTodayOvertimes.length
-            ? `Sampai ${formatTime(nextApprovedOvertime.value?.planned_end)}`
-            : '',
     },
 ]);
 
@@ -101,7 +93,6 @@ const statusLabel = (status) => ({
                     >
                         <p class="text-xs uppercase tracking-[0.08em] text-slate-500 dark:text-slate-400">{{ card.label }}</p>
                         <p class="mt-2 break-words text-2xl font-semibold text-slate-900 dark:text-slate-100">{{ card.value }}</p>
-                        <p v-if="card.hint" class="mt-1 break-words text-sm text-slate-500 dark:text-slate-400">{{ card.hint }}</p>
                     </article>
                 </div>
             </section>
@@ -124,17 +115,14 @@ const statusLabel = (status) => ({
                         <div class="min-w-0 rounded-lg border border-slate-200 px-3 py-3 text-sm dark:border-slate-700">
                             <p class="text-slate-500 dark:text-slate-400">Masuk</p>
                             <p class="mt-1 text-2xl font-semibold text-slate-900 dark:text-slate-100">{{ formatTime(todayAttendance?.clock_in_at) }}</p>
-                            <p class="mt-1 break-all text-slate-500 dark:text-slate-400">{{ todayAttendance?.clock_in_location || 'Belum ada lokasi masuk' }}</p>
                         </div>
                         <div class="min-w-0 rounded-lg border border-slate-200 px-3 py-3 text-sm dark:border-slate-700">
                             <p class="text-slate-500 dark:text-slate-400">Pulang</p>
                             <p class="mt-1 text-2xl font-semibold text-slate-900 dark:text-slate-100">{{ formatTime(todayAttendance?.clock_out_at) }}</p>
-                            <p class="mt-1 break-all text-slate-500 dark:text-slate-400">{{ todayAttendance?.clock_out_location || 'Belum ada lokasi pulang' }}</p>
                         </div>
                         <div class="min-w-0 rounded-lg border border-slate-200 px-3 py-3 text-sm dark:border-slate-700">
                             <p class="text-slate-500 dark:text-slate-400">Validasi</p>
-                            <p class="mt-1 text-2xl font-semibold text-slate-900 dark:text-slate-100">{{ officeReady ? 'Aktif' : 'Nonaktif' }}</p>
-                            <p class="mt-1 text-slate-500 dark:text-slate-400">Radius {{ setting.radius_meters ?? 100 }} meter</p>
+                            <p class="mt-1 text-2xl font-semibold text-slate-900 dark:text-slate-100">{{ officeReady ? 'Kantor' : 'Nonaktif' }}</p>
                         </div>
                     </div>
                 </div>

@@ -34,20 +34,14 @@ const summaryCards = computed(() => [
     {
         label: 'Total Karyawan',
         value: props.summary.totalEmployees,
-        hint: 'Akun karyawan aktif',
-        accent: 'from-slate-900 via-slate-800 to-slate-700 text-white',
     },
     {
         label: 'Akun Admin',
         value: props.summary.totalAdmins,
-        hint: 'Pengguna akses admin',
-        accent: 'from-sky-500 via-cyan-400 to-teal-200 text-sky-950',
     },
     {
         label: 'Hasil Pencarian',
         value: totalFilteredEmployees.value,
-        hint: hasActiveFilter.value ? `Penyaring: "${search.value}"` : 'Semua data',
-        accent: 'from-amber-300 via-amber-200 to-orange-100 text-amber-950',
     },
 ]);
 

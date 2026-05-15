@@ -13,6 +13,8 @@ const props = defineProps({
 
 const GOOGLE_MAPS_DEFAULT_LAT = -0.8917;
 const GOOGLE_MAPS_DEFAULT_LNG = 119.8707;
+const DEFAULT_CHECK_IN_LATE_TOLERANCE_MINUTES = 20;
+const DEFAULT_CHECK_IN_MAX_LATE_MINUTES = 40;
 const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY ?? '';
 
 const notify = useGlobalNotify();
@@ -20,6 +22,7 @@ const hasMapsKey = computed(() => googleMapsApiKey.trim().length > 0);
 const mapContainerRef = ref(null);
 const mapLoading = ref(false);
 const mapError = ref('');
+const currentLocationLoading = ref(false);
 let mapResizeFrameId = null;
 let mapResizeTimeoutId = null;
 
@@ -28,6 +31,8 @@ const form = useForm({
     longitude: props.setting.longitude ?? '',
     radius_meters: Number(props.setting.radius_meters ?? 100),
     check_in_time: props.setting.check_in_time ?? '',
+    check_in_late_tolerance_minutes: Number(props.setting.check_in_late_tolerance_minutes ?? DEFAULT_CHECK_IN_LATE_TOLERANCE_MINUTES),
+    check_in_max_late_minutes: Number(props.setting.check_in_max_late_minutes ?? DEFAULT_CHECK_IN_MAX_LATE_MINUTES),
     check_out_time: props.setting.check_out_time ?? '',
 });
 
@@ -50,6 +55,15 @@ const normalizeRadius = (value) => {
     return Math.round(parsed);
 };
 
+const normalizeMinutes = (value, fallback) => {
+    const parsed = Number(value);
+    if (!Number.isFinite(parsed) || parsed < 0) {
+        return fallback;
+    }
+
+    return Math.round(parsed);
+};
+
 const getInitialPosition = () => ({
     lat: parseCoordinate(form.latitude, GOOGLE_MAPS_DEFAULT_LAT),
     lng: parseCoordinate(form.longitude, GOOGLE_MAPS_DEFAULT_LNG),
@@ -62,20 +76,22 @@ const summaryCards = computed(() => [
     {
         label: 'Radius Aktif',
         value: `${normalizeRadius(form.radius_meters)} m`,
-        hint: 'Area valid presensi dari titik kantor',
-        accent: 'from-slate-900 via-slate-800 to-slate-700 text-white',
     },
     {
         label: 'Jam Masuk',
         value: form.check_in_time || '--:--',
-        hint: 'Waktu acuan check in harian',
-        accent: 'from-sky-500 via-cyan-400 to-teal-200 text-sky-950',
+    },
+    {
+        label: 'Toleransi Normal',
+        value: `${normalizeMinutes(form.check_in_late_tolerance_minutes, DEFAULT_CHECK_IN_LATE_TOLERANCE_MINUTES)} menit`,
+    },
+    {
+        label: 'Batas Maksimal',
+        value: `${normalizeMinutes(form.check_in_max_late_minutes, DEFAULT_CHECK_IN_MAX_LATE_MINUTES)} menit`,
     },
     {
         label: 'Jam Pulang',
         value: form.check_out_time || '--:--',
-        hint: 'Waktu acuan check out harian',
-        accent: 'from-amber-300 via-amber-200 to-orange-100 text-amber-950',
     },
 ]);
 
@@ -144,6 +160,53 @@ const updateRadiusCircle = () => {
     if (radiusCircleInstance) {
         radiusCircleInstance.setRadius(form.radius_meters);
     }
+};
+
+const geolocationErrorMessage = (error) => {
+    if (error?.code === 1) {
+        return 'Izin akses lokasi ditolak. Aktifkan izin lokasi pada browser Anda.';
+    }
+
+    if (error?.code === 2) {
+        return 'Lokasi saat ini belum dapat ditemukan. Pastikan GPS atau layanan lokasi aktif.';
+    }
+
+    if (error?.code === 3) {
+        return 'Waktu pengambilan lokasi habis. Coba ulangi beberapa saat lagi.';
+    }
+
+    return 'Gagal mengambil lokasi saat ini.';
+};
+
+const useCurrentLocation = () => {
+    if (typeof navigator === 'undefined' || !navigator.geolocation) {
+        const message = 'Browser ini tidak mendukung fitur ambil lokasi saat ini.';
+        mapError.value = message;
+        notify.error(message);
+        return;
+    }
+
+    currentLocationLoading.value = true;
+    mapError.value = '';
+
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            updateCoordinatesFromMap(position.coords.latitude, position.coords.longitude, true);
+            notify.success('Lokasi saat ini berhasil diambil.');
+            currentLocationLoading.value = false;
+        },
+        (error) => {
+            const message = geolocationErrorMessage(error);
+            mapError.value = message;
+            notify.error(message);
+            currentLocationLoading.value = false;
+        },
+        {
+            enableHighAccuracy: true,
+            maximumAge: 0,
+            timeout: 15000,
+        },
+    );
 };
 
 const waitForGoogleMaps = (timeoutMs = 10000, intervalMs = 50) => new Promise((resolve, reject) => {
@@ -289,6 +352,14 @@ const initMap = async () => {
 
 const submit = () => {
     form.radius_meters = normalizeRadius(form.radius_meters);
+    form.check_in_late_tolerance_minutes = normalizeMinutes(
+        form.check_in_late_tolerance_minutes,
+        DEFAULT_CHECK_IN_LATE_TOLERANCE_MINUTES,
+    );
+    form.check_in_max_late_minutes = normalizeMinutes(
+        form.check_in_max_late_minutes,
+        DEFAULT_CHECK_IN_MAX_LATE_MINUTES,
+    );
 
     form.put(route('admin.settings.update'), {
         preserveScroll: true,
@@ -361,7 +432,7 @@ onBeforeUnmount(() => {
         <div class="space-y-4">
             <section class="rounded-lg border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
                 <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100">Ringkasan Pengaturan</h2>
-                <div class="mt-3 grid gap-3 md:grid-cols-3">
+                <div class="mt-3 grid gap-3 md:grid-cols-3 xl:grid-cols-5">
                     <article
                         v-for="card in summaryCards"
                         :key="card.label"
@@ -369,7 +440,6 @@ onBeforeUnmount(() => {
                     >
                         <p class="text-xs uppercase tracking-[0.08em] text-slate-500 dark:text-slate-400">{{ card.label }}</p>
                         <p class="mt-2 text-2xl font-semibold text-slate-900 dark:text-slate-100">{{ card.value }}</p>
-                        <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">{{ card.hint }}</p>
                     </article>
                 </div>
             </section>
@@ -384,8 +454,18 @@ onBeforeUnmount(() => {
                                 Sesuaikan posisi kantor langsung dari peta agar koordinat lebih akurat.
                             </p>
                         </div>
-                        <div class="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600 dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-300">
-                            Radius: {{ normalizeRadius(form.radius_meters) }} meter
+                        <div class="flex flex-col gap-2 sm:items-end">
+                            <button
+                                type="button"
+                                :disabled="currentLocationLoading"
+                                class="inline-flex items-center justify-center rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-medium text-emerald-700 transition hover:bg-emerald-100 disabled:cursor-not-allowed disabled:opacity-60 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300 dark:hover:bg-emerald-500/20"
+                                @click="useCurrentLocation"
+                            >
+                                {{ currentLocationLoading ? 'Mengambil Lokasi...' : 'Ambil Lokasi Saat Ini' }}
+                            </button>
+                            <div class="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600 dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-300">
+                                Radius: {{ normalizeRadius(form.radius_meters) }} meter
+                            </div>
                         </div>
                     </div>
 
@@ -450,6 +530,21 @@ onBeforeUnmount(() => {
                                     <label class="text-sm font-medium text-slate-700 dark:text-slate-300">Jam Pulang</label>
                                     <input v-model="form.check_out_time" type="time" :class="inputClass(!!form.errors.check_out_time)" />
                                     <p v-if="form.errors.check_out_time" class="mt-2 text-xs text-rose-600 dark:text-rose-300">{{ form.errors.check_out_time }}</p>
+                                </div>
+                            </div>
+
+                            <div class="grid gap-4 sm:grid-cols-2">
+                                <div>
+                                    <label class="text-sm font-medium text-slate-700 dark:text-slate-300">Toleransi Normal Masuk (menit)</label>
+                                    <input v-model.number="form.check_in_late_tolerance_minutes" type="number" min="0" max="1440" :class="inputClass(!!form.errors.check_in_late_tolerance_minutes)" />
+                                    <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">Lewat batas ini, presensi masuk ditandai Lambat.</p>
+                                    <p v-if="form.errors.check_in_late_tolerance_minutes" class="mt-2 text-xs text-rose-600 dark:text-rose-300">{{ form.errors.check_in_late_tolerance_minutes }}</p>
+                                </div>
+                                <div>
+                                    <label class="text-sm font-medium text-slate-700 dark:text-slate-300">Batas Maksimal Terlambat (menit)</label>
+                                    <input v-model.number="form.check_in_max_late_minutes" type="number" min="0" max="1440" :class="inputClass(!!form.errors.check_in_max_late_minutes)" />
+                                    <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">Lewat batas ini, absen masuk ditutup.</p>
+                                    <p v-if="form.errors.check_in_max_late_minutes" class="mt-2 text-xs text-rose-600 dark:text-rose-300">{{ form.errors.check_in_max_late_minutes }}</p>
                                 </div>
                             </div>
 

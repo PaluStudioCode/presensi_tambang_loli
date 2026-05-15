@@ -30,6 +30,19 @@ class AuthenticationTest extends TestCase
         $response->assertRedirect('/home');
     }
 
+    public function test_users_can_authenticate_using_email(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->post('/login', [
+            'id_number' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $this->assertAuthenticated();
+        $response->assertRedirect('/home');
+    }
+
     public function test_users_can_not_authenticate_with_invalid_password(): void
     {
         $user = User::factory()->create();

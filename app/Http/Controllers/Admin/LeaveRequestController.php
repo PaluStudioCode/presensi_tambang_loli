@@ -79,7 +79,6 @@ class LeaveRequestController extends Controller
                 'proof_photo_download_url' => route('admin.leaves.proof.download', $leaveRequest, false),
                 'approval_status' => $leaveRequest->approval_status,
                 'approved_by' => $leaveRequest->approver?->full_name,
-                'created_at' => optional($leaveRequest->created_at)->toDateTimeString(),
             ]),
         ]);
     }

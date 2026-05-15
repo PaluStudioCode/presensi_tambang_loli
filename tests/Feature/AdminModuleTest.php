@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Attendance;
 use App\Models\Overtime;
+use App\Models\OutsideDuty;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -82,22 +83,51 @@ class AdminModuleTest extends TestCase
             'approved_by' => null,
         ]);
 
+        $outsideDuty = OutsideDuty::query()->create([
+            'user_id' => $employee->id,
+            'duty_date' => now()->toDateString(),
+            'planned_start' => '09:00:00',
+            'planned_end' => '12:00:00',
+            'location_name' => 'Site Loli Timur',
+            'latitude' => '-6.250000',
+            'longitude' => '106.850000',
+            'requested_radius_meters' => 150,
+            'reason' => 'Inspeksi area tugas luar.',
+            'request_photo' => 'outside-duty.jpg',
+            'approval_status' => 'Pending',
+            'approved_by' => null,
+        ]);
+
         $settingResponse = $this->actingAs($admin)->put(route('admin.settings.update'), [
             'latitude' => '-6.200000',
             'longitude' => '106.816666',
             'radius_meters' => 120,
             'check_in_time' => '08:00',
+            'check_in_late_tolerance_minutes' => 20,
+            'check_in_max_late_minutes' => 40,
             'check_out_time' => '17:00',
         ]);
         $settingResponse->assertRedirect();
+        $this->assertDatabaseHas('settings', [
+            'radius_meters' => 120,
+            'check_in_late_tolerance_minutes' => 20,
+            'check_in_max_late_minutes' => 40,
+        ]);
 
         $attendanceResponse = $this->actingAs($admin)->get(route('admin.attendances.index'));
         $attendanceResponse->assertOk();
-        $attendanceResponse->assertInertia(fn (Assert $page) => $page->component('Admin/Attendances'));
+        $attendanceResponse->assertInertia(fn (Assert $page) => $page
+            ->component('Admin/Attendances')
+            ->where('summary.lateCheckIn', 1)
+            ->where('attendances.data.0.clock_in_status', 'Lambat'));
 
         $overtimeResponse = $this->actingAs($admin)->get(route('admin.overtimes.index'));
         $overtimeResponse->assertOk();
         $overtimeResponse->assertInertia(fn (Assert $page) => $page->component('Admin/Overtimes'));
+
+        $outsideDutyResponse = $this->actingAs($admin)->get(route('admin.outside-duties.index'));
+        $outsideDutyResponse->assertOk();
+        $outsideDutyResponse->assertInertia(fn (Assert $page) => $page->component('Admin/OutsideDuties'));
 
         $approveResponse = $this->actingAs($admin)->patch(route('admin.overtimes.approve', $overtime));
         $approveResponse->assertRedirect();
@@ -105,6 +135,17 @@ class AdminModuleTest extends TestCase
             'id' => $overtime->id,
             'approval_status' => 'Approved',
             'approved_by' => $admin->id,
+        ]);
+
+        $approveOutsideDutyResponse = $this->actingAs($admin)->patch(route('admin.outside-duties.approve', $outsideDuty), [
+            'approved_radius_meters' => 180,
+        ]);
+        $approveOutsideDutyResponse->assertRedirect();
+        $this->assertDatabaseHas('outside_duties', [
+            'id' => $outsideDuty->id,
+            'approval_status' => 'Approved',
+            'approved_by' => $admin->id,
+            'approved_radius_meters' => 180,
         ]);
 
         $reportResponse = $this->actingAs($admin)->get(route('admin.reports.index'));
@@ -128,6 +169,7 @@ class AdminModuleTest extends TestCase
         $this->actingAs($employee)->get(route('admin.settings.index'))->assertForbidden();
         $this->actingAs($employee)->get(route('admin.attendances.index'))->assertForbidden();
         $this->actingAs($employee)->get(route('admin.overtimes.index'))->assertForbidden();
+        $this->actingAs($employee)->get(route('admin.outside-duties.index'))->assertForbidden();
         $this->actingAs($employee)->get(route('admin.reports.index'))->assertForbidden();
     }
 

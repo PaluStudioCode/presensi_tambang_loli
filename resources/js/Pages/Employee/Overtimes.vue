@@ -64,8 +64,6 @@ const {
     cameraLoading,
     cameraReady,
     captureSnapshot,
-    captureTimestamp,
-    capturedPhoto,
     currentPosition,
     ensureLocation,
     firstErrorMessage,
@@ -118,24 +116,20 @@ const summaryCards = computed(() => [
     {
         label: 'Disetujui Hari Ini',
         value: String(props.approvedTodayOvertimes.length),
-        hint: '',
     },
     {
         label: 'Jadwal Terdekat',
         value: nextApprovedOvertime.value
             ? `${formatTime(nextApprovedOvertime.value.planned_start)} - ${formatTime(nextApprovedOvertime.value.planned_end)}`
             : '--:--',
-        hint: nextApprovedOvertime.value?.reason || '',
     },
     {
         label: 'Riwayat Ditampilkan',
         value: String(props.recentOvertimes.length),
-        hint: '',
     },
     {
         label: 'Radius Kantor',
         value: `${props.setting.radius_meters ?? 100} m`,
-        hint: officeReady.value ? '' : 'Belum diatur',
     },
 ]);
 
@@ -251,12 +245,11 @@ onBeforeUnmount(() => {
                     >
                         <p class="text-xs uppercase tracking-[0.08em] text-slate-500 dark:text-slate-400">{{ card.label }}</p>
                         <p class="mt-2 text-2xl font-semibold text-slate-900 dark:text-slate-100">{{ card.value }}</p>
-                        <p v-if="card.hint" class="mt-1 text-sm text-slate-500 dark:text-slate-400">{{ card.hint }}</p>
                     </article>
                 </div>
             </section>
 
-            <section class="grid gap-4 xl:grid-cols-[minmax(320px,0.9fr)_minmax(0,1.1fr)]">
+            <section class="grid items-start gap-4 xl:grid-cols-[minmax(320px,0.9fr)_minmax(0,1.1fr)]">
                 <section class="rounded-lg border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
                     <p class="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400 dark:text-slate-500">Pengajuan Lembur</p>
                     <h2 class="mt-2 text-base font-semibold text-slate-900 dark:text-slate-100">Buat pengajuan baru</h2>
@@ -346,7 +339,7 @@ onBeforeUnmount(() => {
                         </div>
                     </div>
 
-                    <div class="mt-3 grid gap-3 lg:grid-cols-[minmax(0,1fr)_18rem]">
+                    <div class="mt-3 grid items-start gap-3 lg:grid-cols-[minmax(0,1fr)_18rem]">
                         <div class="relative overflow-hidden rounded-lg border border-slate-200 bg-slate-950 dark:border-slate-800">
                             <video ref="videoRef" autoplay muted playsinline class="aspect-[4/3] w-full object-cover" />
                             <div v-if="!cameraReady" class="absolute inset-0 grid place-items-center bg-slate-950/85 px-6 text-center text-sm text-slate-300">
@@ -356,30 +349,14 @@ onBeforeUnmount(() => {
                             </div>
                         </div>
 
-                        <div class="space-y-3">
-                            <div class="rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm dark:border-slate-700 dark:bg-slate-800/60">
-                                <p class="text-slate-500 dark:text-slate-400">Lokasi Saat Ini</p>
-                                <p class="mt-1 font-semibold text-slate-900 dark:text-slate-100">
-                                    {{ currentPosition ? `${currentPosition.latitude.toFixed(6)}, ${currentPosition.longitude.toFixed(6)}` : 'Belum diambil' }}
-                                </p>
-                                <p class="mt-1 text-slate-500 dark:text-slate-400">
-                                    Akurasi: {{ currentPosition?.accuracy ? `${currentPosition.accuracy} m` : '-' }}
-                                </p>
-                            </div>
-
-                            <div class="rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm dark:border-slate-700 dark:bg-slate-800/60">
-                                <p class="text-slate-500 dark:text-slate-400">Foto Terakhir</p>
-                                <img
-                                    v-if="capturedPhoto"
-                                    :src="capturedPhoto"
-                                    alt="Foto presensi lembur"
-                                    class="mt-3 aspect-[4/3] w-full rounded-lg object-cover"
-                                >
-                                <div v-else class="mt-3 grid aspect-[4/3] place-items-center rounded-lg border border-dashed border-slate-300 text-sm text-slate-400 dark:border-slate-700">
-                                    Belum ada foto
-                                </div>
-                                <p class="mt-2 text-slate-500 dark:text-slate-400">Diambil: {{ captureTimestamp || '-' }}</p>
-                            </div>
+                        <div class="rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm dark:border-slate-700 dark:bg-slate-800/60">
+                            <p class="text-slate-500 dark:text-slate-400">Lokasi Saat Ini</p>
+                            <p class="mt-1 font-semibold text-slate-900 dark:text-slate-100">
+                                {{ currentPosition ? `${currentPosition.latitude.toFixed(6)}, ${currentPosition.longitude.toFixed(6)}` : 'Belum diambil' }}
+                            </p>
+                            <p class="mt-1 text-slate-500 dark:text-slate-400">
+                                Akurasi: {{ currentPosition?.accuracy ? `${currentPosition.accuracy} m` : '-' }}
+                            </p>
                         </div>
                     </div>
 

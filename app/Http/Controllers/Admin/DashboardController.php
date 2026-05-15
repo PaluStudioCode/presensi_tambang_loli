@@ -28,10 +28,11 @@ class DashboardController extends Controller
         $clockedOutToday = (clone $attendanceToday)->whereNotNull('clock_out_at')->count();
 
         $lateCheckInToday = 0;
-        if ($setting?->check_in_time) {
+        $lateThreshold = $this->resolveLateThreshold($setting);
+        if ($lateThreshold) {
             $lateCheckInToday = (clone $attendanceToday)
                 ->whereNotNull('clock_in_at')
-                ->where('clock_in_at', '>', $setting->check_in_time)
+                ->where('clock_in_at', '>', $lateThreshold)
                 ->count();
         }
 
@@ -110,15 +111,18 @@ class DashboardController extends Controller
                 'longitude' => $setting->longitude,
                 'radius_meters' => $setting->radius_meters,
                 'check_in_time' => $setting->check_in_time,
+                'check_in_late_tolerance_minutes' => $setting->checkInLateToleranceMinutes(),
+                'check_in_max_late_minutes' => $setting->checkInMaxLateMinutes(),
                 'check_out_time' => $setting->check_out_time,
             ] : null,
-            'recentAttendances' => $recentAttendances->map(function (Attendance $attendance): array {
+            'recentAttendances' => $recentAttendances->map(function (Attendance $attendance) use ($setting): array {
                 return [
                     'id' => $attendance->id,
                     'date' => $attendance->date,
                     'employee_name' => $attendance->user?->full_name ?? '-',
                     'id_number' => $attendance->user?->id_number,
                     'clock_in_at' => $attendance->clock_in_at,
+                    'clock_in_status' => $this->resolveClockInStatus($attendance->clock_in_at, $setting),
                     'clock_out_at' => $attendance->clock_out_at,
                     'clock_in_photo' => PublicFileUrl::make($attendance->clock_in_photo),
                     'clock_out_photo' => PublicFileUrl::make($attendance->clock_out_photo),
@@ -153,6 +157,32 @@ class DashboardController extends Controller
                 ];
             }),
         ]);
+    }
+
+    private function resolveLateThreshold(?Setting $setting): ?string
+    {
+        if (! $setting?->check_in_time) {
+            return null;
+        }
+
+        return Carbon::parse('2000-01-01 '.$setting->check_in_time)
+            ->addMinutes($setting->checkInLateToleranceMinutes())
+            ->format('H:i:s');
+    }
+
+    private function resolveClockInStatus(?string $clockInAt, ?Setting $setting): string
+    {
+        if (! $clockInAt) {
+            return '-';
+        }
+
+        $lateThreshold = $this->resolveLateThreshold($setting);
+
+        if (! $lateThreshold) {
+            return 'Tercatat';
+        }
+
+        return $clockInAt > $lateThreshold ? 'Lambat' : 'Tepat Waktu';
     }
 
 }

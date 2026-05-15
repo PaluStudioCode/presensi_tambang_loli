@@ -29,13 +29,15 @@ class AdminDashboardTest extends TestCase
             'longitude' => '106.816666',
             'radius_meters' => 100,
             'check_in_time' => '08:00:00',
+            'check_in_late_tolerance_minutes' => 20,
+            'check_in_max_late_minutes' => 40,
             'check_out_time' => '17:00:00',
         ]);
 
         Attendance::query()->create([
             'user_id' => $employee->id,
             'date' => now()->toDateString(),
-            'clock_in_at' => '08:15:00',
+            'clock_in_at' => '08:25:00',
             'clock_in_photo' => 'clock-in.jpg',
             'clock_in_location' => '-6.2,106.8',
             'clock_out_at' => null,
@@ -64,6 +66,7 @@ class AdminDashboardTest extends TestCase
             ->where('attendanceToday.clockedIn', 1)
             ->where('attendanceToday.clockedOut', 0)
             ->where('attendanceToday.lateCheckIn', 1)
+            ->where('recentAttendances.0.clock_in_status', 'Lambat')
             ->where('recentAttendances.0.clock_in_photo', PublicFileUrl::make('clock-in.jpg'))
             ->has('pendingOvertimes', 1)
             ->has('recentAttendances', 1));

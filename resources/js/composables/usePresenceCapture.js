@@ -1,7 +1,7 @@
 import { router } from '@inertiajs/vue3';
 import { nextTick, ref, unref } from 'vue';
 
-export const usePresenceCapture = ({ notify, officeReady }) => {
+export const usePresenceCapture = ({ notify, officeReady, unavailableMessage = 'Lokasi kantor belum dikonfigurasi admin.' }) => {
     const videoRef = ref(null);
     const cameraLoading = ref(false);
     const cameraReady = ref(false);
@@ -153,7 +153,7 @@ export const usePresenceCapture = ({ notify, officeReady }) => {
 
     const submitPresence = async ({ actionKey, routeName, successMessage, routeParams = undefined }) => {
         if (!unref(officeReady)) {
-            notify.error('Lokasi kantor belum dikonfigurasi admin.');
+            notify.error(unavailableMessage);
             return;
         }
 

@@ -67,8 +67,8 @@ onBeforeUnmount(() => {
 <template>
     <section>
         <header>
-            <h2 class="text-lg font-medium text-gray-900 dark:text-slate-100">Foto Profil</h2>
-            <p class="mt-1 text-sm text-gray-600 dark:text-slate-400">
+            <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100">Foto Profil</h2>
+            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
                 Upload foto profil Anda sendiri.
             </p>
         </header>
@@ -117,7 +117,7 @@ onBeforeUnmount(() => {
                     leave-active-class="transition ease-in-out"
                     leave-to-class="opacity-0"
                 >
-                    <p v-if="form.recentlySuccessful || deleteForm.recentlySuccessful" class="text-sm text-gray-600 dark:text-slate-400">
+                    <p v-if="form.recentlySuccessful || deleteForm.recentlySuccessful" class="text-sm text-emerald-700 dark:text-emerald-300">
                         Tersimpan.
                     </p>
                 </Transition>

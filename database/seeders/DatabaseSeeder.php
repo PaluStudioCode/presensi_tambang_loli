@@ -27,6 +27,8 @@ class DatabaseSeeder extends Seeder
             'longitude' => '119.870700',
             'radius_meters' => 100,
             'check_in_time' => '08:00:00',
+            'check_in_late_tolerance_minutes' => 20,
+            'check_in_max_late_minutes' => 40,
             'check_out_time' => '17:00:00',
         ]);
 

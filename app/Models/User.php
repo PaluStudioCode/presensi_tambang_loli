@@ -50,6 +50,16 @@ class User extends Authenticatable
         return $this->hasMany(LeaveRequest::class, 'approved_by');
     }
 
+    public function outsideDuties()
+    {
+        return $this->hasMany(OutsideDuty::class);
+    }
+
+    public function approvedOutsideDuties()
+    {
+        return $this->hasMany(OutsideDuty::class, 'approved_by');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

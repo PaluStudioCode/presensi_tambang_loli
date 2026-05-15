@@ -31,17 +31,14 @@ const summaryCards = computed(() => [
     {
         label: 'Total Izin',
         value: props.leaveRequests.total ?? props.leaveRequests.data.length,
-        hint: 'Riwayat pengajuan Anda',
     },
     {
         label: 'Menunggu',
         value: props.leaveRequests.data.filter((leaveRequest) => leaveRequest.approval_status === 'Pending').length,
-        hint: 'Menunggu persetujuan admin',
     },
     {
         label: 'Disetujui',
         value: props.leaveRequests.data.filter((leaveRequest) => leaveRequest.approval_status === 'Approved').length,
-        hint: 'Sudah disetujui',
     },
 ]);
 
@@ -182,7 +179,6 @@ onBeforeUnmount(() => {
                     >
                         <p class="text-xs uppercase tracking-[0.08em] text-slate-500 dark:text-slate-400">{{ card.label }}</p>
                         <p class="mt-2 text-2xl font-semibold text-slate-900 dark:text-slate-100">{{ card.value }}</p>
-                        <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">{{ card.hint }}</p>
                     </article>
                 </div>
             </section>

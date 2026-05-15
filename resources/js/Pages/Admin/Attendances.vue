@@ -57,6 +57,18 @@ const formatTime = (value) => {
     return value.slice(0, 5);
 };
 
+const clockInStatusClass = (status) => {
+    if (status === 'Lambat') {
+        return 'bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-300';
+    }
+
+    if (status === 'Tepat Waktu') {
+        return 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300';
+    }
+
+    return 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300';
+};
+
 const applyFilter = () => {
     router.get(route('admin.attendances.index'), {
         date_from: form.date_from,
@@ -172,6 +184,7 @@ onBeforeUnmount(() => {
                                     <th class="py-2 pe-4 font-medium">Tanggal</th>
                                     <th class="py-2 pe-4 font-medium">Karyawan</th>
                                     <th class="py-2 pe-4 font-medium">Masuk</th>
+                                    <th class="py-2 pe-4 font-medium">Status</th>
                                     <th class="py-2 pe-4 font-medium">Pulang</th>
                                     <th class="py-2 pe-4 font-medium">Lokasi</th>
                                     <th class="py-2 pe-4 font-medium">Foto</th>
@@ -185,6 +198,11 @@ onBeforeUnmount(() => {
                                         <p class="text-xs text-gray-500">{{ attendance.id_number ?? '-' }}</p>
                                     </td>
                                     <td class="py-3 pe-4 whitespace-nowrap">{{ formatTime(attendance.clock_in_at) }}</td>
+                                    <td class="py-3 pe-4 whitespace-nowrap">
+                                        <span class="inline-flex rounded-full px-2 py-1 text-xs font-semibold" :class="clockInStatusClass(attendance.clock_in_status)">
+                                            {{ attendance.clock_in_status ?? '-' }}
+                                        </span>
+                                    </td>
                                     <td class="py-3 pe-4 whitespace-nowrap">{{ formatTime(attendance.clock_out_at) }}</td>
                                     <td class="py-3 pe-4">
                                         <p class="truncate max-w-[220px]" :title="attendance.clock_in_location ?? '-'">Masuk: {{ attendance.clock_in_location ?? '-' }}</p>
@@ -211,10 +229,10 @@ onBeforeUnmount(() => {
                                             <span v-if="!attendance.clock_in_photo && !attendance.clock_out_photo" class="text-xs text-gray-500">-</span>
                                         </div>
                                     </td>
-                                </tr>
-                                <tr v-if="attendances.data.length === 0">
-                                    <td colspan="6" class="py-4 text-center text-gray-500">Data presensi tidak ditemukan.</td>
-                                </tr>
+                            </tr>
+                            <tr v-if="attendances.data.length === 0">
+                                <td colspan="7" class="py-4 text-center text-gray-500">Data presensi tidak ditemukan.</td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>

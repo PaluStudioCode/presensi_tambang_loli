@@ -36,7 +36,7 @@ const updatePassword = () => {
 <template>
     <section>
         <header>
-            <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">Ubah Password</h2>
+            <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100">Ubah Password</h2>
 
             <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
                 Masukkan password lama sebelum mengganti ke password baru.
@@ -102,7 +102,7 @@ const updatePassword = () => {
                     leave-active-class="transition ease-in-out"
                     leave-to-class="opacity-0"
                 >
-                    <p v-if="form.recentlySuccessful" class="text-sm text-slate-500 dark:text-slate-400">Password berhasil diperbarui.</p>
+                    <p v-if="form.recentlySuccessful" class="text-sm text-emerald-700 dark:text-emerald-300">Password berhasil diperbarui.</p>
                 </Transition>
             </div>
         </form>

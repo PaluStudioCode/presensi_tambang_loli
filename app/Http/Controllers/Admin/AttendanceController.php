@@ -36,10 +36,11 @@ class AttendanceController extends Controller
         $clockedOut = (clone $query)->whereNotNull('clock_out_at')->count();
 
         $lateCheckIn = 0;
-        if ($setting?->check_in_time) {
+        $lateThreshold = $this->resolveLateThreshold($setting);
+        if ($lateThreshold) {
             $lateCheckIn = (clone $query)
                 ->whereNotNull('clock_in_at')
-                ->where('clock_in_at', '>', $setting->check_in_time)
+                ->where('clock_in_at', '>', $lateThreshold)
                 ->count();
         }
 
@@ -70,13 +71,14 @@ class AttendanceController extends Controller
                 'clockedOut' => $clockedOut,
                 'lateCheckIn' => $lateCheckIn,
             ],
-            'attendances' => $attendances->through(function (Attendance $attendance): array {
+            'attendances' => $attendances->through(function (Attendance $attendance) use ($setting): array {
                 return [
                     'id' => $attendance->id,
                     'date' => $attendance->date,
                     'employee_name' => $attendance->user?->full_name ?? '-',
                     'id_number' => $attendance->user?->id_number,
                     'clock_in_at' => $attendance->clock_in_at,
+                    'clock_in_status' => $this->resolveClockInStatus($attendance->clock_in_at, $setting),
                     'clock_out_at' => $attendance->clock_out_at,
                     'clock_in_photo' => PublicFileUrl::make($attendance->clock_in_photo),
                     'clock_out_photo' => PublicFileUrl::make($attendance->clock_out_photo),
@@ -85,5 +87,31 @@ class AttendanceController extends Controller
                 ];
             }),
         ]);
+    }
+
+    private function resolveLateThreshold(?Setting $setting): ?string
+    {
+        if (! $setting?->check_in_time) {
+            return null;
+        }
+
+        return Carbon::parse('2000-01-01 '.$setting->check_in_time)
+            ->addMinutes($setting->checkInLateToleranceMinutes())
+            ->format('H:i:s');
+    }
+
+    private function resolveClockInStatus(?string $clockInAt, ?Setting $setting): string
+    {
+        if (! $clockInAt) {
+            return '-';
+        }
+
+        $lateThreshold = $this->resolveLateThreshold($setting);
+
+        if (! $lateThreshold) {
+            return 'Tercatat';
+        }
+
+        return $clockInAt > $lateThreshold ? 'Lambat' : 'Tepat Waktu';
     }
 }

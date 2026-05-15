@@ -40,7 +40,7 @@ class ReportController extends Controller
         }
 
         $setting = Setting::query()->latest('id')->first();
-        $lateThreshold = $setting?->check_in_time;
+        $lateThreshold = $this->resolveLateThreshold($setting);
 
         $attendanceRecords = (clone $attendanceQuery)->count();
         $attendanceEmployees = (clone $attendanceQuery)->distinct()->count('user_id');
@@ -454,5 +454,16 @@ class ReportController extends Controller
         }
 
         return number_format($start->diffInMinutes($end) / 60, 1, '.', '');
+    }
+
+    private function resolveLateThreshold(?Setting $setting): ?string
+    {
+        if (! $setting?->check_in_time) {
+            return null;
+        }
+
+        return Carbon::parse('2000-01-01 '.$setting->check_in_time)
+            ->addMinutes($setting->checkInLateToleranceMinutes())
+            ->format('H:i:s');
     }
 }

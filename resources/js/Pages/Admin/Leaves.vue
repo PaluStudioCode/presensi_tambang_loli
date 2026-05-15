@@ -77,15 +77,6 @@ const formatDate = (value) => {
     }).format(new Date(year, month - 1, day));
 };
 
-const formatDateTime = (value) => {
-    if (!value) return '-';
-
-    return new Intl.DateTimeFormat('id-ID', {
-        dateStyle: 'medium',
-        timeStyle: 'short',
-    }).format(new Date(value));
-};
-
 const applyFilter = () => {
     router.get(route('admin.leaves.index'), {
         date_from: form.date_from,
@@ -263,14 +254,12 @@ onBeforeUnmount(() => {
                                 <th class="py-2 pe-4 font-medium">Bukti</th>
                                 <th class="py-2 pe-4 font-medium">Status</th>
                                 <th class="py-2 pe-4 font-medium">Disetujui Oleh</th>
-                                <th class="py-2 pe-4 font-medium">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100 text-gray-700">
                             <tr v-for="leaveRequest in leaveRequests.data" :key="leaveRequest.id">
                                 <td class="py-3 pe-4 whitespace-nowrap">
                                     <p>{{ formatDate(leaveRequest.leave_date) }}</p>
-                                    <p class="mt-1 text-xs text-gray-500">{{ formatDateTime(leaveRequest.created_at) }}</p>
                                 </td>
                                 <td class="py-3 pe-4">
                                     <p class="font-medium text-gray-900">{{ leaveRequest.employee_name }}</p>
@@ -300,10 +289,7 @@ onBeforeUnmount(() => {
                                     <span class="inline-flex rounded-full px-2 py-1 text-xs font-medium" :class="statusClass(leaveRequest.approval_status)">
                                         {{ statusLabel(leaveRequest.approval_status) }}
                                     </span>
-                                </td>
-                                <td class="py-3 pe-4">{{ leaveRequest.approved_by ?? '-' }}</td>
-                                <td class="py-3 pe-4">
-                                    <div v-if="leaveRequest.approval_status === 'Pending'" class="flex items-center gap-2">
+                                    <div v-if="leaveRequest.approval_status === 'Pending'" class="mt-2 flex items-center gap-2">
                                         <button
                                             type="button"
                                             class="rounded-md bg-green-600 px-2 py-1 text-xs font-medium text-white hover:bg-green-700 disabled:opacity-60 dark:bg-emerald-600 dark:hover:bg-emerald-500"
@@ -323,11 +309,11 @@ onBeforeUnmount(() => {
                                             <span v-else>Tolak</span>
                                         </button>
                                     </div>
-                                    <span v-else class="text-xs text-gray-500">Diproses</span>
                                 </td>
+                                <td class="py-3 pe-4">{{ leaveRequest.approved_by ?? '-' }}</td>
                             </tr>
                             <tr v-if="leaveRequests.data.length === 0">
-                                <td colspan="7" class="py-4 text-center text-gray-500">Data izin tidak ditemukan.</td>
+                                <td colspan="6" class="py-4 text-center text-gray-500">Data izin tidak ditemukan.</td>
                             </tr>
                         </tbody>
                     </table>

@@ -5,16 +5,16 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\EmployeeController as AdminEmployeeController;
 use App\Http\Controllers\Admin\LeaveRequestController as AdminLeaveRequestController;
 use App\Http\Controllers\Admin\OvertimeController as AdminOvertimeController;
+use App\Http\Controllers\Admin\OutsideDutyController as AdminOutsideDutyController;
 use App\Http\Controllers\Admin\ReportController as AdminReportController;
 use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Employee\HomeController as EmployeeHomeController;
 use App\Http\Controllers\Employee\LeaveRequestController as EmployeeLeaveRequestController;
+use App\Http\Controllers\Employee\OutsideDutyController as EmployeeOutsideDutyController;
 use App\Http\Controllers\PublicFileController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 
 Route::get('/', function (Request $request) {
@@ -26,11 +26,7 @@ Route::get('/', function (Request $request) {
         });
     }
 
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return redirect()->route('login');
 });
 
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {
@@ -59,6 +55,12 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
         ->name('admin.leaves.approve');
     Route::patch('/admin/leaves/{leaveRequest}/reject', [AdminLeaveRequestController::class, 'reject'])
         ->name('admin.leaves.reject');
+
+    Route::get('/admin/outside-duties', [AdminOutsideDutyController::class, 'index'])->name('admin.outside-duties.index');
+    Route::patch('/admin/outside-duties/{outsideDuty}/approve', [AdminOutsideDutyController::class, 'approve'])
+        ->name('admin.outside-duties.approve');
+    Route::patch('/admin/outside-duties/{outsideDuty}/reject', [AdminOutsideDutyController::class, 'reject'])
+        ->name('admin.outside-duties.reject');
 
     Route::get('/admin/reports', [AdminReportController::class, 'index'])->name('admin.reports.index');
     Route::get('/admin/reports/attendance.csv', [AdminReportController::class, 'attendanceCsv'])
@@ -90,6 +92,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('employee.leaves.index');
     Route::post('/employee/leaves', [EmployeeLeaveRequestController::class, 'store'])
         ->name('employee.leaves.store');
+    Route::get('/employee/outside-duties', [EmployeeOutsideDutyController::class, 'index'])
+        ->name('employee.outside-duties.index');
+    Route::get('/employee/outside-duties/create', [EmployeeOutsideDutyController::class, 'create'])
+        ->name('employee.outside-duties.create');
+    Route::get('/employee/outside-duties/attendance', [EmployeeOutsideDutyController::class, 'attendance'])
+        ->name('employee.outside-duties.attendance');
+    Route::post('/employee/outside-duties', [EmployeeOutsideDutyController::class, 'store'])
+        ->name('employee.outside-duties.store');
+    Route::post('/employee/outside-duties/{outsideDuty}/attendance', [EmployeeOutsideDutyController::class, 'attend'])
+        ->name('employee.outside-duties.attend');
     Route::post('/employee/attendance/clock-in', [EmployeeHomeController::class, 'clockIn'])
         ->name('employee.attendance.clock-in');
     Route::post('/employee/attendance/clock-out', [EmployeeHomeController::class, 'clockOut'])

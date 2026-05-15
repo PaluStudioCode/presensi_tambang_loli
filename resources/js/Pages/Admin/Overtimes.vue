@@ -260,7 +260,6 @@ const processOvertime = async (id, action) => {
                                     <th class="py-2 pe-4 font-medium">Foto</th>
                                     <th class="py-2 pe-4 font-medium">Status</th>
                                     <th class="py-2 pe-4 font-medium">Disetujui Oleh</th>
-                                    <th class="py-2 pe-4 font-medium">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100 text-gray-700">
@@ -306,10 +305,7 @@ const processOvertime = async (id, action) => {
                                         <span class="inline-flex rounded-full px-2 py-1 text-xs font-medium" :class="statusClass(overtime.approval_status)">
                                             {{ statusLabel(overtime.approval_status) }}
                                         </span>
-                                    </td>
-                                    <td class="py-3 pe-4">{{ overtime.approved_by ?? '-' }}</td>
-                                    <td class="py-3 pe-4">
-                                        <div v-if="overtime.approval_status === 'Pending'" class="flex items-center gap-2">
+                                        <div v-if="overtime.approval_status === 'Pending'" class="mt-2 flex items-center gap-2">
                                             <button
                                                 type="button"
                                                 class="rounded-md bg-green-600 px-2 py-1 text-xs font-medium text-white hover:bg-green-700 disabled:opacity-60 dark:bg-emerald-600 dark:hover:bg-emerald-500"
@@ -329,11 +325,11 @@ const processOvertime = async (id, action) => {
                                                 <span v-else>Tolak</span>
                                             </button>
                                         </div>
-                                        <span v-else class="text-xs text-gray-500">Diproses</span>
                                     </td>
+                                    <td class="py-3 pe-4">{{ overtime.approved_by ?? '-' }}</td>
                                 </tr>
                                 <tr v-if="overtimes.data.length === 0">
-                                    <td colspan="8" class="py-4 text-center text-gray-500">Data lembur tidak ditemukan.</td>
+                                    <td colspan="7" class="py-4 text-center text-gray-500">Data lembur tidak ditemukan.</td>
                                 </tr>
                             </tbody>
                         </table>

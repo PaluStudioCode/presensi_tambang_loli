@@ -25,9 +25,9 @@ const form = useForm({
 <template>
     <section>
         <header>
-            <h2 class="text-lg font-medium text-gray-900">Informasi Profil</h2>
+            <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100">Informasi Profil</h2>
 
-            <p class="mt-1 text-sm text-gray-600">
+            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
                 Perbarui informasi profil dan alamat email akun Anda.
             </p>
         </header>
@@ -65,13 +65,13 @@ const form = useForm({
             </div>
 
             <div v-if="mustVerifyEmail && user.email_verified_at === null">
-                <p class="text-sm mt-2 text-gray-800">
+                <p class="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-300">
                     Alamat email Anda belum diverifikasi.
                     <Link
                         :href="route('verification.send')"
                         method="post"
                         as="button"
-                        class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        class="rounded-lg font-medium underline underline-offset-4 transition hover:text-amber-950 focus:outline-none focus:ring-4 focus:ring-amber-100 dark:hover:text-amber-100 dark:focus:ring-amber-500/10"
                     >
                         Klik di sini untuk mengirim ulang email verifikasi.
                     </Link>
@@ -79,7 +79,7 @@ const form = useForm({
 
                 <div
                     v-show="status === 'verification-link-sent'"
-                    class="mt-2 font-medium text-sm text-green-600"
+                    class="mt-2 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-300"
                 >
                     Tautan verifikasi baru sudah dikirim ke alamat email Anda.
                 </div>
@@ -94,7 +94,7 @@ const form = useForm({
                     leave-active-class="transition ease-in-out"
                     leave-to-class="opacity-0"
                 >
-                    <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Tersimpan.</p>
+                    <p v-if="form.recentlySuccessful" class="text-sm text-emerald-700 dark:text-emerald-300">Tersimpan.</p>
                 </Transition>
             </div>
         </form>
