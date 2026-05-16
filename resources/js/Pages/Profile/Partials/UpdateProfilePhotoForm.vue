@@ -89,7 +89,7 @@ onBeforeUnmount(() => {
                     <input
                         type="file"
                         accept="image/png,image/jpeg,image/webp"
-                        class="block w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm file:me-4 file:rounded-lg file:border-0 file:bg-slate-900 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white file:transition hover:file:bg-slate-800 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:file:bg-slate-800 dark:file:text-slate-100 dark:hover:file:bg-slate-700"
+                        class="block w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 file:me-4 file:rounded-lg file:border-0 file:bg-slate-900 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white file:transition hover:file:bg-slate-800 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:file:bg-slate-800 dark:file:text-slate-100 dark:hover:file:bg-slate-700"
                         @change="handlePhotoChange"
                     >
                     <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">Format JPG, PNG, atau WebP. Maksimal 2 MB.</p>

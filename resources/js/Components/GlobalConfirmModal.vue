@@ -7,14 +7,14 @@ const { state, confirmNow, cancelNow } = confirmDialogController;
 
 const confirmButtonClass = computed(() => {
     if (state.variant === 'warning') {
-        return 'bg-amber-500 text-slate-950 hover:bg-amber-400 dark:bg-amber-400 dark:hover:bg-amber-300';
+        return 'bg-red-600 text-white hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700';
     }
 
     if (state.variant === 'primary') {
-        return 'bg-slate-900 text-white hover:bg-slate-800 dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300';
+        return 'bg-blue-700 text-white hover:bg-blue-800 dark:bg-blue-700 dark:text-white dark:hover:bg-blue-800';
     }
 
-    return 'bg-rose-600 text-white hover:bg-rose-700 dark:bg-rose-500 dark:hover:bg-rose-400';
+    return 'bg-red-600 text-white hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700';
 });
 </script>
 
@@ -31,7 +31,7 @@ const confirmButtonClass = computed(() => {
             <div class="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
                 <button
                     type="button"
-                    class="rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+                    class="rounded-lg border border-blue-200 px-4 py-2.5 text-sm font-medium text-blue-700 transition hover:bg-blue-50 dark:border-blue-200 dark:text-blue-700 dark:hover:bg-blue-50"
                     :disabled="state.isProcessing"
                     :class="state.isProcessing ? 'cursor-not-allowed opacity-60' : ''"
                     @click="cancelNow"

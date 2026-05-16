@@ -24,7 +24,9 @@ class EmployeeController extends Controller
                     $innerQuery
                         ->where('full_name', 'like', "%{$search}%")
                         ->orWhere('id_number', 'like', "%{$search}%")
-                        ->orWhere('email', 'like', "%{$search}%");
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('department', 'like', "%{$search}%")
+                        ->orWhere('address', 'like', "%{$search}%");
                 });
             })
             ->orderByDesc('created_at')
@@ -44,6 +46,8 @@ class EmployeeController extends Controller
                     'id' => $employee->id,
                     'id_number' => $employee->id_number,
                     'full_name' => $employee->full_name,
+                    'department' => $employee->department,
+                    'address' => $employee->address,
                     'email' => $employee->email,
                     'created_at' => optional($employee->created_at)->toDateTimeString(),
                 ];
@@ -56,6 +60,8 @@ class EmployeeController extends Controller
         $validated = $request->validate([
             'id_number' => ['required', 'string', 'max:50', 'unique:users,id_number'],
             'full_name' => ['required', 'string', 'max:255'],
+            'department' => ['nullable', 'string', 'max:255'],
+            'address' => ['nullable', 'string', 'max:1000'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', Password::defaults()],
         ]);
@@ -63,6 +69,8 @@ class EmployeeController extends Controller
         User::query()->create([
             'id_number' => $validated['id_number'],
             'full_name' => $validated['full_name'],
+            'department' => $validated['department'] ?? null,
+            'address' => $validated['address'] ?? null,
             'email' => $validated['email'],
             'password' => $validated['password'],
             'role' => 'Employee',
@@ -83,6 +91,8 @@ class EmployeeController extends Controller
                 Rule::unique('users', 'id_number')->ignore($employee->id),
             ],
             'full_name' => ['required', 'string', 'max:255'],
+            'department' => ['nullable', 'string', 'max:255'],
+            'address' => ['nullable', 'string', 'max:1000'],
             'email' => [
                 'required',
                 'email',
@@ -94,6 +104,8 @@ class EmployeeController extends Controller
         $payload = [
             'id_number' => $validated['id_number'],
             'full_name' => $validated['full_name'],
+            'department' => $validated['department'] ?? null,
+            'address' => $validated['address'] ?? null,
             'email' => $validated['email'],
         ];
 

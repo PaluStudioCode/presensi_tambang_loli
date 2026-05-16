@@ -252,25 +252,25 @@ onBeforeUnmount(() => {
     <AuthenticatedLayout>
         <div class="space-y-4">
             <div class="grid grid-cols-2 gap-3 lg:grid-cols-4">
-                <div class="rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
+                <div class="rounded-xl border border-gray-100 bg-white p-4">
                     <p class="text-xs text-gray-500">Total Pengajuan</p>
                     <p class="mt-1 text-xl font-semibold text-gray-900">{{ summary.totalRequests }}</p>
                 </div>
-                <div class="rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
+                <div class="rounded-xl border border-gray-100 bg-white p-4">
                     <p class="text-xs text-gray-500">Menunggu</p>
                     <p class="mt-1 text-xl font-semibold text-gray-900">{{ summary.pendingRequests }}</p>
                 </div>
-                <div class="rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
+                <div class="rounded-xl border border-gray-100 bg-white p-4">
                     <p class="text-xs text-gray-500">Disetujui</p>
                     <p class="mt-1 text-xl font-semibold text-gray-900">{{ summary.approvedRequests }}</p>
                 </div>
-                <div class="rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
+                <div class="rounded-xl border border-gray-100 bg-white p-4">
                     <p class="text-xs text-gray-500">Ditolak</p>
                     <p class="mt-1 text-xl font-semibold text-gray-900">{{ summary.rejectedRequests }}</p>
                 </div>
             </div>
 
-            <div class="rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
+            <div class="rounded-xl border border-gray-100 bg-white p-4">
                 <div class="grid grid-cols-1 gap-3 md:grid-cols-5">
                     <div>
                         <label class="block text-xs text-gray-500">Dari Tanggal</label>
@@ -306,7 +306,7 @@ onBeforeUnmount(() => {
                 </div>
             </div>
 
-            <div class="rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
+            <div class="rounded-xl border border-gray-100 bg-white p-4">
                 <div class="overflow-x-auto">
                     <table class="min-w-full text-sm">
                         <thead class="border-b border-gray-100 text-left text-gray-500">
@@ -444,7 +444,7 @@ onBeforeUnmount(() => {
                             type="number"
                             min="1"
                             max="50000"
-                            class="mt-2 block w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-amber-400 focus:outline-none focus:ring-4 focus:ring-amber-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-amber-500/10"
+                            class="mt-2 block w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 focus:border-amber-400 focus:outline-none focus:ring-4 focus:ring-amber-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-amber-500/10"
                             required
                         >
                         <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">

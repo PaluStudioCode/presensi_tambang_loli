@@ -36,6 +36,8 @@ class DatabaseSeeder extends Seeder
         $admin = User::create([
             'id_number' => '1234567890',
             'full_name' => 'Administrator',
+            'department' => 'Administrasi',
+            'address' => 'Kantor PT. ABDARA BRM TAMBANG',
             'email' => 'admin@example.com',
             'password' => Hash::make('password'),
             'role' => 'Admin'
@@ -46,10 +48,12 @@ class DatabaseSeeder extends Seeder
             User::create([
                 'id_number' => $faker->unique()->nik(),
                 'full_name' => "agus karyawan",
+                'department' => 'Operasional Tambang',
+                'address' => $faker->address(),
                 'email' => "karyawan@example.com",
                 'password' => Hash::make('password'),
                 'role' => 'Employee'
             ]),
         ];
     }
-    }
+}

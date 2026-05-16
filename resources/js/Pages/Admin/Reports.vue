@@ -187,7 +187,7 @@ onBeforeUnmount(() => {
 
     <AuthenticatedLayout>
         <div class="space-y-4">
-                <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-4">
+                <div class="bg-white border border-gray-100 rounded-xl p-4">
                     <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
                         <div>
                             <label class="block text-xs text-gray-500">Dari Tanggal</label>
@@ -247,30 +247,30 @@ onBeforeUnmount(() => {
                 </div>
 
                 <div class="grid grid-cols-2 lg:grid-cols-5 gap-3">
-                    <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-4">
+                    <div class="bg-white border border-gray-100 rounded-xl p-4">
                         <p class="text-xs text-gray-500">Total Karyawan</p>
                         <p class="mt-1 text-xl font-semibold text-gray-900">{{ summary.totalEmployees }}</p>
                     </div>
-                    <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-4">
+                    <div class="bg-white border border-gray-100 rounded-xl p-4">
                         <p class="text-xs text-gray-500">Data Presensi</p>
                         <p class="mt-1 text-xl font-semibold text-gray-900">{{ summary.attendanceRecords }}</p>
                     </div>
-                    <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-4">
+                    <div class="bg-white border border-gray-100 rounded-xl p-4">
                         <p class="text-xs text-gray-500">Karyawan Hadir</p>
                         <p class="mt-1 text-xl font-semibold text-gray-900">{{ summary.attendanceEmployees }}</p>
                     </div>
-                    <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-4">
+                    <div class="bg-white border border-gray-100 rounded-xl p-4">
                         <p class="text-xs text-gray-500">Presensi Terlambat</p>
                         <p class="mt-1 text-xl font-semibold text-gray-900">{{ summary.lateAttendance }}</p>
                     </div>
-                    <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-4">
+                    <div class="bg-white border border-gray-100 rounded-xl p-4">
                         <p class="text-xs text-gray-500">Jam Lembur Disetujui</p>
                         <p class="mt-1 text-xl font-semibold text-gray-900">{{ summary.approvedHours }} jam</p>
                     </div>
                 </div>
 
                 <div class="grid items-stretch grid-cols-1 xl:grid-cols-2 gap-4">
-                    <div class="flex h-[32rem] min-h-0 flex-col bg-white border border-gray-100 rounded-xl shadow-sm p-4">
+                    <div class="flex h-[32rem] min-h-0 flex-col bg-white border border-gray-100 rounded-xl p-4">
                         <h3 class="text-lg font-semibold text-gray-900">Rekap Presensi per Karyawan</h3>
                         <div class="mt-4 min-h-0 flex-1 overflow-auto pe-1">
                             <table class="min-w-full text-sm">
@@ -302,7 +302,7 @@ onBeforeUnmount(() => {
                         </div>
                     </div>
 
-                    <div class="flex h-[32rem] min-h-0 flex-col bg-white border border-gray-100 rounded-xl shadow-sm p-4">
+                    <div class="flex h-[32rem] min-h-0 flex-col bg-white border border-gray-100 rounded-xl p-4">
                         <h3 class="text-lg font-semibold text-gray-900">Rekap Lembur per Karyawan</h3>
                         <div class="mt-4 min-h-0 flex-1 overflow-auto pe-1">
                             <table class="min-w-full text-sm">
@@ -336,7 +336,7 @@ onBeforeUnmount(() => {
                 </div>
 
                 <div class="grid items-stretch grid-cols-1 xl:grid-cols-2 gap-4">
-                    <div class="flex h-[32rem] min-h-0 flex-col bg-white border border-gray-100 rounded-xl shadow-sm p-4">
+                    <div class="flex h-[32rem] min-h-0 flex-col bg-white border border-gray-100 rounded-xl p-4">
                         <h3 class="text-lg font-semibold text-gray-900">Detail Presensi (100 terbaru)</h3>
                         <div class="mt-4 min-h-0 flex-1 overflow-auto pe-1">
                             <table class="min-w-full text-sm">
@@ -363,7 +363,7 @@ onBeforeUnmount(() => {
                         </div>
                     </div>
 
-                    <div class="flex h-[32rem] min-h-0 flex-col bg-white border border-gray-100 rounded-xl shadow-sm p-4">
+                    <div class="flex h-[32rem] min-h-0 flex-col bg-white border border-gray-100 rounded-xl p-4">
                         <h3 class="text-lg font-semibold text-gray-900">Detail Lembur (100 terbaru)</h3>
                         <div class="mt-4 min-h-0 flex-1 overflow-auto pe-1">
                             <table class="min-w-full text-sm">

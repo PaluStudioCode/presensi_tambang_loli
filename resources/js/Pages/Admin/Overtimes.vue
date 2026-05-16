@@ -190,29 +190,29 @@ const processOvertime = async (id, action) => {
     <AuthenticatedLayout>
         <div class="space-y-4">
                 <div class="grid grid-cols-2 lg:grid-cols-5 gap-3">
-                    <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-4">
+                    <div class="bg-white border border-gray-100 rounded-xl p-4">
                         <p class="text-xs text-gray-500">Total Pengajuan</p>
                         <p class="mt-1 text-xl font-semibold text-gray-900">{{ summary.totalRequests }}</p>
                     </div>
-                    <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-4">
+                    <div class="bg-white border border-gray-100 rounded-xl p-4">
                         <p class="text-xs text-gray-500">Menunggu</p>
                         <p class="mt-1 text-xl font-semibold text-gray-900">{{ summary.pendingRequests }}</p>
                     </div>
-                    <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-4">
+                    <div class="bg-white border border-gray-100 rounded-xl p-4">
                         <p class="text-xs text-gray-500">Disetujui</p>
                         <p class="mt-1 text-xl font-semibold text-gray-900">{{ summary.approvedRequests }}</p>
                     </div>
-                    <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-4">
+                    <div class="bg-white border border-gray-100 rounded-xl p-4">
                         <p class="text-xs text-gray-500">Ditolak</p>
                         <p class="mt-1 text-xl font-semibold text-gray-900">{{ summary.rejectedRequests }}</p>
                     </div>
-                    <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-4">
+                    <div class="bg-white border border-gray-100 rounded-xl p-4">
                         <p class="text-xs text-gray-500">Jam Disetujui</p>
                         <p class="mt-1 text-xl font-semibold text-gray-900">{{ summary.approvedHours }} jam</p>
                     </div>
                 </div>
 
-                <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-4">
+                <div class="bg-white border border-gray-100 rounded-xl p-4">
                     <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
                         <div>
                             <label class="block text-xs text-gray-500">Dari Tanggal</label>
@@ -248,7 +248,7 @@ const processOvertime = async (id, action) => {
                     </div>
                 </div>
 
-                <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-4">
+                <div class="bg-white border border-gray-100 rounded-xl p-4">
                     <div class="overflow-x-auto">
                         <table class="min-w-full text-sm">
                             <thead class="text-left text-gray-500 border-b border-gray-100">

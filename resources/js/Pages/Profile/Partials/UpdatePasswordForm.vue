@@ -60,35 +60,37 @@ const updatePassword = () => {
                 <InputError :message="form.errors.current_password" class="mt-2" />
             </div>
 
-            <div>
-                <InputLabel for="password" value="Password Baru" />
+            <div class="grid gap-x-5 gap-y-6 lg:grid-cols-2">
+                <div>
+                    <InputLabel for="password" value="Password Baru" />
 
-                <TextInput
-                    id="password"
-                    ref="passwordInput"
-                    v-model="form.password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    autocomplete="new-password"
-                    required
-                />
+                    <TextInput
+                        id="password"
+                        ref="passwordInput"
+                        v-model="form.password"
+                        type="password"
+                        class="mt-1 block w-full"
+                        autocomplete="new-password"
+                        required
+                    />
 
-                <InputError :message="form.errors.password" class="mt-2" />
-            </div>
+                    <InputError :message="form.errors.password" class="mt-2" />
+                </div>
 
-            <div>
-                <InputLabel for="password_confirmation" value="Konfirmasi Password Baru" />
+                <div>
+                    <InputLabel for="password_confirmation" value="Konfirmasi Password Baru" />
 
-                <TextInput
-                    id="password_confirmation"
-                    v-model="form.password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
-                    autocomplete="new-password"
-                    required
-                />
+                    <TextInput
+                        id="password_confirmation"
+                        v-model="form.password_confirmation"
+                        type="password"
+                        class="mt-1 block w-full"
+                        autocomplete="new-password"
+                        required
+                    />
 
-                <InputError :message="form.errors.password_confirmation" class="mt-2" />
+                    <InputError :message="form.errors.password_confirmation" class="mt-2" />
+                </div>
             </div>
 
             <div class="flex items-center gap-4">

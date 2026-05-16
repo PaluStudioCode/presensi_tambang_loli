@@ -96,8 +96,8 @@ const summaryCards = computed(() => [
 ]);
 
 const inputClass = (hasError) => [
-    'mt-2 block w-full rounded-2xl border bg-white px-4 py-3 text-sm text-slate-900 shadow-sm transition placeholder:text-slate-400 focus:border-amber-400 focus:outline-none focus:ring-4 focus:ring-amber-100 dark:bg-slate-900/80 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:ring-amber-500/10',
-    hasError ? 'border-rose-300 dark:border-rose-500/40' : 'border-slate-200 dark:border-slate-700',
+    'mt-2 block w-full rounded-2xl border bg-white px-4 py-3 text-sm text-slate-900 transition placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-100 dark:bg-white dark:text-slate-900 dark:placeholder:text-slate-500 dark:focus:ring-blue-500/10',
+    hasError ? 'border-red-300 dark:border-red-500/40' : 'border-blue-100 dark:border-blue-200',
 ];
 
 const handleLayoutResize = () => {
@@ -309,9 +309,9 @@ const initMap = async () => {
             map: mapInstance,
             center,
             radius: normalizeRadius(form.radius_meters),
-            fillColor: '#0f172a',
+            fillColor: '#2563eb',
             fillOpacity: 0.12,
-            strokeColor: '#0f172a',
+            strokeColor: '#1d4ed8',
             strokeOpacity: 0.6,
             strokeWeight: 1,
         });
@@ -458,18 +458,15 @@ onBeforeUnmount(() => {
                             <button
                                 type="button"
                                 :disabled="currentLocationLoading"
-                                class="inline-flex items-center justify-center rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-medium text-emerald-700 transition hover:bg-emerald-100 disabled:cursor-not-allowed disabled:opacity-60 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300 dark:hover:bg-emerald-500/20"
+                                class="inline-flex items-center justify-center rounded-lg border border-blue-200 bg-blue-50 px-4 py-2.5 text-sm font-medium text-blue-700 transition hover:bg-blue-100 disabled:cursor-not-allowed disabled:opacity-60 dark:border-blue-200 dark:bg-blue-50 dark:text-blue-700 dark:hover:bg-blue-100"
                                 @click="useCurrentLocation"
                             >
                                 {{ currentLocationLoading ? 'Mengambil Lokasi...' : 'Ambil Lokasi Saat Ini' }}
                             </button>
-                            <div class="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600 dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-300">
-                                Radius: {{ normalizeRadius(form.radius_meters) }} meter
-                            </div>
                         </div>
                     </div>
 
-                    <div v-if="!hasMapsKey" class="mt-6 rounded-lg border border-amber-200 bg-amber-50 px-4 py-4 text-sm text-amber-800 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-300">
+                    <div v-if="!hasMapsKey" class="mt-6 rounded-lg border border-red-200 bg-red-50 px-4 py-4 text-sm text-red-700 dark:border-red-200 dark:bg-red-50 dark:text-red-700">
                         Google Maps belum aktif. Isi `VITE_GOOGLE_MAPS_API_KEY` di `.env`, lalu jalankan ulang Vite.
                     </div>
 
@@ -515,8 +512,7 @@ onBeforeUnmount(() => {
                             <div>
                                 <label class="text-sm font-medium text-slate-700 dark:text-slate-300">Radius Presensi (meter)</label>
                                 <input v-model.number="form.radius_meters" type="number" min="1" :class="inputClass(!!form.errors.radius_meters)" required />
-                                <input v-model.number="form.radius_meters" type="range" min="10" max="5000" step="10" class="mt-4 w-full accent-amber-500" />
-                                <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">Radius aktif: {{ normalizeRadius(form.radius_meters) }} meter</p>
+                                <input v-model.number="form.radius_meters" type="range" min="10" max="5000" step="10" class="mt-4 w-full accent-blue-600" />
                                 <p v-if="form.errors.radius_meters" class="mt-2 text-xs text-rose-600 dark:text-rose-300">{{ form.errors.radius_meters }}</p>
                             </div>
 
@@ -551,7 +547,7 @@ onBeforeUnmount(() => {
                             <button
                                 type="submit"
                                 :disabled="form.processing"
-                                class="inline-flex w-full items-center justify-center rounded-lg bg-slate-900 px-4 py-3 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300"
+                                class="inline-flex w-full items-center justify-center rounded-lg bg-blue-700 px-4 py-3 text-sm font-medium text-white transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-blue-700 dark:text-white dark:hover:bg-blue-800"
                             >
                                 {{ form.processing ? 'Menyimpan...' : 'Simpan Pengaturan' }}
                             </button>

@@ -260,7 +260,7 @@ onBeforeUnmount(() => {
                             <input
                                 v-model="overtimeForm.overtime_date"
                                 type="date"
-                                class="mt-2 block w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-amber-400 focus:outline-none focus:ring-4 focus:ring-amber-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-amber-500/10"
+                                class="mt-2 block w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 focus:border-amber-400 focus:outline-none focus:ring-4 focus:ring-amber-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-amber-500/10"
                             >
                             <p v-if="overtimeForm.errors.overtime_date" class="mt-2 text-xs text-rose-600 dark:text-rose-300">{{ overtimeForm.errors.overtime_date }}</p>
                         </div>
@@ -271,7 +271,7 @@ onBeforeUnmount(() => {
                                 <input
                                     v-model="overtimeForm.planned_start"
                                     type="time"
-                                    class="mt-2 block w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-amber-400 focus:outline-none focus:ring-4 focus:ring-amber-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-amber-500/10"
+                                    class="mt-2 block w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 focus:border-amber-400 focus:outline-none focus:ring-4 focus:ring-amber-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-amber-500/10"
                                 >
                                 <p v-if="overtimeForm.errors.planned_start" class="mt-2 text-xs text-rose-600 dark:text-rose-300">{{ overtimeForm.errors.planned_start }}</p>
                             </div>
@@ -280,7 +280,7 @@ onBeforeUnmount(() => {
                                 <input
                                     v-model="overtimeForm.planned_end"
                                     type="time"
-                                    class="mt-2 block w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-amber-400 focus:outline-none focus:ring-4 focus:ring-amber-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-amber-500/10"
+                                    class="mt-2 block w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 focus:border-amber-400 focus:outline-none focus:ring-4 focus:ring-amber-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-amber-500/10"
                                 >
                                 <p v-if="overtimeForm.errors.planned_end" class="mt-2 text-xs text-rose-600 dark:text-rose-300">{{ overtimeForm.errors.planned_end }}</p>
                             </div>
@@ -291,7 +291,7 @@ onBeforeUnmount(() => {
                             <textarea
                                 v-model="overtimeForm.reason"
                                 rows="4"
-                                class="mt-2 block w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-amber-400 focus:outline-none focus:ring-4 focus:ring-amber-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-amber-500/10"
+                                class="mt-2 block w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 focus:border-amber-400 focus:outline-none focus:ring-4 focus:ring-amber-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-amber-500/10"
                                 placeholder="Contoh: penyelesaian target harian, penutupan laporan, atau kebutuhan operasional lapangan."
                             ></textarea>
                             <p v-if="overtimeForm.errors.reason" class="mt-2 text-xs text-rose-600 dark:text-rose-300">{{ overtimeForm.errors.reason }}</p>

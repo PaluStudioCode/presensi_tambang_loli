@@ -156,7 +156,7 @@ onBeforeUnmount(() => {
         <div class="min-h-screen">
             <aside
                 v-show="!isSidebarCollapsed"
-                class="hidden border-r border-slate-200 bg-white px-4 py-6 xl:fixed xl:inset-y-0 xl:left-0 xl:z-20 xl:flex xl:h-screen xl:w-64 xl:flex-col xl:overflow-y-auto dark:border-slate-800 dark:bg-slate-900"
+                class="hidden border-r border-blue-100 bg-white px-4 py-6 xl:fixed xl:inset-y-0 xl:left-0 xl:z-20 xl:flex xl:h-screen xl:w-64 xl:flex-col xl:overflow-y-auto dark:border-blue-200 dark:bg-white"
             >
                 <Link :href="route(homeRouteName)" class="inline-flex">
                     <ApplicationLogo class="max-w-full" />
@@ -169,17 +169,17 @@ onBeforeUnmount(() => {
                         :href="route(link.name)"
                         class="block rounded-lg px-3 py-2 text-sm font-medium transition"
                         :class="isLinkActive(link)
-                            ? 'bg-slate-900 text-white dark:bg-amber-500/15 dark:text-amber-200'
-                            : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-slate-50'"
+                            ? 'bg-blue-700 text-white dark:bg-blue-700 dark:text-white'
+                            : 'text-slate-600 hover:bg-blue-50 hover:text-blue-700 dark:text-slate-600 dark:hover:bg-blue-50 dark:hover:text-blue-700'"
                         @click="closeNavigationDropdown"
                     >
                         {{ link.label }}
                     </Link>
                 </nav>
 
-                <div class="mt-auto border-t border-slate-200 pt-4 dark:border-slate-800">
+                <div class="mt-auto border-t border-blue-100 pt-4 dark:border-blue-100">
                     <div class="flex items-center gap-3">
-                        <div class="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-lg bg-slate-100 text-xs font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-100">
+                        <div class="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-lg bg-blue-50 text-xs font-semibold text-blue-700 dark:bg-blue-50 dark:text-blue-700">
                             <img v-if="userPhotoUrl" :src="userPhotoUrl" alt="Foto profil" class="h-full w-full object-cover">
                             <span v-else>{{ userInitials }}</span>
                         </div>
@@ -191,7 +191,7 @@ onBeforeUnmount(() => {
                     <div class="mt-3 grid gap-2">
                         <Link
                             :href="route('profile.edit')"
-                            class="inline-flex items-center justify-center rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+                            class="inline-flex items-center justify-center rounded-lg border border-blue-200 px-3 py-2 text-sm font-medium text-blue-700 transition hover:bg-blue-50 dark:border-blue-200 dark:text-blue-700 dark:hover:bg-blue-50"
                         >
                             Profil
                         </Link>
@@ -199,7 +199,7 @@ onBeforeUnmount(() => {
                             :href="route('logout')"
                             method="post"
                             as="button"
-                            class="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-slate-900 px-3 py-2 text-sm font-medium text-white transition hover:bg-slate-800 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700"
+                            class="inline-flex items-center justify-center rounded-lg border border-red-600 bg-red-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-red-700 dark:border-red-600 dark:bg-red-600 dark:text-white dark:hover:bg-red-700"
                         >
                             Keluar
                         </Link>
@@ -211,12 +211,12 @@ onBeforeUnmount(() => {
                 class="flex min-h-screen flex-col transition-[padding] duration-300"
                 :class="isSidebarCollapsed ? 'xl:pl-0' : 'xl:pl-64'"
             >
-                <header class="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur dark:border-slate-800 dark:bg-slate-950/95">
+                <header class="sticky top-0 z-30 border-b border-blue-100 bg-white/95 backdrop-blur dark:border-blue-100 dark:bg-white/95">
                     <div class="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
                         <div class="flex min-w-0 items-center gap-2">
                             <button
                                 type="button"
-                                class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50 xl:hidden dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
+                                class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-blue-200 bg-white text-blue-700 transition hover:bg-blue-50 xl:hidden dark:border-blue-200 dark:bg-white dark:text-blue-700 dark:hover:bg-blue-50"
                                 @click="toggleNavigationDropdown"
                             >
                                 <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -232,7 +232,7 @@ onBeforeUnmount(() => {
 
                             <button
                                 type="button"
-                                class="hidden h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50 xl:inline-flex dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
+                                class="hidden h-10 w-10 items-center justify-center rounded-lg border border-blue-200 bg-white text-blue-700 transition hover:bg-blue-50 xl:inline-flex dark:border-blue-200 dark:bg-white dark:text-blue-700 dark:hover:bg-blue-50"
                                 @click="toggleDesktopSidebar"
                             >
                                 <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -252,7 +252,7 @@ onBeforeUnmount(() => {
                         <div aria-hidden="true"></div>
                     </div>
 
-                    <div v-if="showingNavigationDropdown" class="border-t border-slate-200 bg-white px-4 py-3 xl:hidden dark:border-slate-800 dark:bg-slate-950">
+                    <div v-if="showingNavigationDropdown" class="border-t border-blue-100 bg-white px-4 py-3 xl:hidden dark:border-blue-100 dark:bg-white">
                         <div class="space-y-1">
                             <Link
                                 v-for="link in navLinks"
@@ -260,8 +260,8 @@ onBeforeUnmount(() => {
                                 :href="route(link.name)"
                                 class="block rounded-lg px-3 py-2 text-sm font-medium transition"
                                 :class="isLinkActive(link)
-                                    ? 'bg-slate-900 text-white dark:bg-amber-500/15 dark:text-amber-200'
-                                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-slate-50'"
+                                    ? 'bg-blue-700 text-white dark:bg-blue-700 dark:text-white'
+                                    : 'text-slate-600 hover:bg-blue-50 hover:text-blue-700 dark:text-slate-600 dark:hover:bg-blue-50 dark:hover:text-blue-700'"
                                 @click="closeNavigationDropdown"
                             >
                                 {{ link.label }}
@@ -271,7 +271,7 @@ onBeforeUnmount(() => {
                         <div class="mt-3 grid grid-cols-2 gap-2">
                             <Link
                                 :href="route('profile.edit')"
-                                class="inline-flex items-center justify-center rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 dark:border-slate-700 dark:text-slate-200"
+                                class="inline-flex items-center justify-center rounded-lg border border-blue-200 px-3 py-2 text-sm font-medium text-blue-700 dark:border-blue-200 dark:text-blue-700"
                                 @click="closeNavigationDropdown"
                             >
                                 Profil
@@ -280,7 +280,7 @@ onBeforeUnmount(() => {
                                 :href="route('logout')"
                                 method="post"
                                 as="button"
-                                class="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-slate-900 px-3 py-2 text-sm font-medium text-white transition hover:bg-slate-800 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700"
+                                class="inline-flex items-center justify-center rounded-lg border border-red-600 bg-red-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-red-700 dark:border-red-600 dark:bg-red-600 dark:text-white dark:hover:bg-red-700"
                             >
                                 Keluar
                             </Link>
@@ -292,7 +292,7 @@ onBeforeUnmount(() => {
                     <div class="mx-auto flex w-full max-w-7xl flex-col gap-4">
                         <section
                             v-if="$slots.header"
-                            class="rounded-lg border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900"
+                            class="rounded-lg border border-blue-100 bg-white p-4 dark:border-blue-100 dark:bg-white"
                         >
                             <slot name="header" />
                         </section>

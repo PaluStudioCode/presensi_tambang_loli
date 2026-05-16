@@ -131,25 +131,25 @@ onBeforeUnmount(() => {
     <AuthenticatedLayout>
         <div class="space-y-4">
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                    <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-4">
+                    <div class="bg-white border border-gray-100 rounded-xl p-4">
                         <p class="text-xs text-gray-500">Total Data</p>
                         <p class="mt-1 text-xl font-semibold text-gray-900">{{ summary.totalRecords }}</p>
                     </div>
-                    <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-4">
+                    <div class="bg-white border border-gray-100 rounded-xl p-4">
                         <p class="text-xs text-gray-500">Absen Masuk</p>
                         <p class="mt-1 text-xl font-semibold text-gray-900">{{ summary.clockedIn }}</p>
                     </div>
-                    <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-4">
+                    <div class="bg-white border border-gray-100 rounded-xl p-4">
                         <p class="text-xs text-gray-500">Absen Pulang</p>
                         <p class="mt-1 text-xl font-semibold text-gray-900">{{ summary.clockedOut }}</p>
                     </div>
-                    <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-4">
+                    <div class="bg-white border border-gray-100 rounded-xl p-4">
                         <p class="text-xs text-gray-500">Terlambat</p>
                         <p class="mt-1 text-xl font-semibold text-gray-900">{{ summary.lateCheckIn }}</p>
                     </div>
                 </div>
 
-                <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-4">
+                <div class="bg-white border border-gray-100 rounded-xl p-4">
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
                         <div>
                             <label class="block text-xs text-gray-500">Dari Tanggal</label>
@@ -176,7 +176,7 @@ onBeforeUnmount(() => {
                     </div>
                 </div>
 
-                <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-4">
+                <div class="bg-white border border-gray-100 rounded-xl p-4">
                     <div class="overflow-x-auto">
                         <table class="min-w-full text-sm">
                             <thead class="text-left text-gray-500 border-b border-gray-100">

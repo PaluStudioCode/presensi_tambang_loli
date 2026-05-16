@@ -43,7 +43,7 @@ const summaryCards = computed(() => [
 ]);
 
 const inputClass = (hasError) => [
-    'mt-2 block w-full rounded-lg border bg-white px-4 py-3 text-sm text-slate-900 shadow-sm transition placeholder:text-slate-400 focus:border-amber-400 focus:outline-none focus:ring-4 focus:ring-amber-100 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:ring-amber-500/10',
+    'mt-2 block w-full rounded-lg border bg-white px-4 py-3 text-sm text-slate-900 transition placeholder:text-slate-400 focus:border-amber-400 focus:outline-none focus:ring-4 focus:ring-amber-100 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:ring-amber-500/10',
     hasError ? 'border-rose-300 dark:border-rose-500/40' : 'border-slate-200 dark:border-slate-700',
 ];
 

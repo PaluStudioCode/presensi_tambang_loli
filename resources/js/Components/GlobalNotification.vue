@@ -26,25 +26,25 @@ onBeforeUnmount(() => {
 
 const notificationClass = (type) => {
     if (type === 'success') {
-        return 'border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-500/30 dark:bg-emerald-500/15 dark:text-emerald-200';
+        return 'border-blue-200 bg-blue-50 text-blue-900 dark:border-blue-200 dark:bg-blue-50 dark:text-blue-900';
     }
 
     if (type === 'error') {
-        return 'border-rose-200 bg-rose-50 text-rose-900 dark:border-rose-500/30 dark:bg-rose-500/15 dark:text-rose-200';
+        return 'border-red-200 bg-red-50 text-red-900 dark:border-red-200 dark:bg-red-50 dark:text-red-900';
     }
 
     if (type === 'warning') {
-        return 'border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/15 dark:text-amber-200';
+        return 'border-red-200 bg-red-50 text-red-900 dark:border-red-200 dark:bg-red-50 dark:text-red-900';
     }
 
-    return 'border-sky-200 bg-sky-50 text-sky-900 dark:border-sky-500/30 dark:bg-sky-500/15 dark:text-sky-200';
+    return 'border-blue-200 bg-blue-50 text-blue-900 dark:border-blue-200 dark:bg-blue-50 dark:text-blue-900';
 };
 
 const iconClass = computed(() => ({
-    success: 'text-emerald-500 dark:text-emerald-300',
-    error: 'text-rose-500 dark:text-rose-300',
-    warning: 'text-amber-500 dark:text-amber-300',
-    info: 'text-sky-500 dark:text-sky-300',
+    success: 'text-blue-600 dark:text-blue-600',
+    error: 'text-red-600 dark:text-red-600',
+    warning: 'text-red-600 dark:text-red-600',
+    info: 'text-blue-600 dark:text-blue-600',
 }));
 
 const iconPath = (type) => {
@@ -80,7 +80,7 @@ const iconPath = (type) => {
                 <article
                     v-for="notification in state.notifications"
                     :key="notification.id"
-                    class="pointer-events-auto rounded-xl border p-4 shadow-lg backdrop-blur"
+                    class="pointer-events-auto rounded-xl border p-4 backdrop-blur"
                     :class="notificationClass(notification.type)"
                 >
                     <div class="flex items-start gap-3">

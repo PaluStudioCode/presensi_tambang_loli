@@ -25,6 +25,8 @@ let searchDebounceTimeoutId = null;
 const employeeForm = useForm({
     id_number: '',
     full_name: '',
+    department: '',
+    address: '',
     email: '',
     password: '',
     password_confirmation: '',
@@ -46,7 +48,7 @@ const summaryCards = computed(() => [
 ]);
 
 const inputClass = (hasError) => [
-    'mt-2 block w-full rounded-2xl border bg-white px-4 py-3 text-sm text-slate-900 shadow-sm transition placeholder:text-slate-400 focus:border-amber-400 focus:outline-none focus:ring-4 focus:ring-amber-100 dark:bg-slate-900/80 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:ring-amber-500/10',
+    'mt-2 block w-full rounded-2xl border bg-white px-4 py-3 text-sm text-slate-900 transition placeholder:text-slate-400 focus:border-amber-400 focus:outline-none focus:ring-4 focus:ring-amber-100 dark:bg-slate-900/80 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:ring-amber-500/10',
     hasError ? 'border-rose-300 dark:border-rose-500/40' : 'border-slate-200 dark:border-slate-700',
 ];
 
@@ -69,14 +71,12 @@ const applyFilter = () => {
     });
 };
 
-const resetFilter = () => {
-    search.value = '';
-};
-
 const clearEmployeeForm = () => {
     employeeForm.transform((data) => data);
     employeeForm.id_number = '';
     employeeForm.full_name = '';
+    employeeForm.department = '';
+    employeeForm.address = '';
     employeeForm.email = '';
     employeeForm.password = '';
     employeeForm.password_confirmation = '';
@@ -100,6 +100,8 @@ const startEdit = (employee) => {
     clearEmployeeForm();
     employeeForm.id_number = employee.id_number;
     employeeForm.full_name = employee.full_name;
+    employeeForm.department = employee.department ?? '';
+    employeeForm.address = employee.address ?? '';
     employeeForm.email = employee.email;
     showEmployeeModal.value = true;
 };
@@ -111,6 +113,8 @@ const submitEmployee = () => {
         employeeForm.transform((data) => ({
             id_number: data.id_number,
             full_name: data.full_name,
+            department: data.department,
+            address: data.address,
             email: data.email,
         })).patch(route('admin.employees.update', editingEmployee.value.id), {
             preserveScroll: true,
@@ -213,9 +217,6 @@ onBeforeUnmount(() => {
                         <h3 class="mt-2 text-base font-semibold text-slate-900 dark:text-slate-100">Daftar karyawan</h3>
                     </div>
                     <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
-                        <div class="rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-300">
-                            {{ totalFilteredEmployees }} data ditemukan
-                        </div>
                         <button
                             type="button"
                             class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800 dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300"
@@ -230,13 +231,10 @@ onBeforeUnmount(() => {
                     <input
                         v-model="search"
                         type="text"
-                        placeholder="Cari nama / ID / email"
+                        placeholder="Cari nama / ID / email / departemen / alamat"
                         :class="inputClass(false)"
                         class="mt-0 lg:flex-1"
                     />
-                    <button type="button" class="rounded-lg border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800" @click="resetFilter">
-                        Atur Ulang
-                    </button>
                 </div>
 
                 <div class="mt-4 space-y-3 md:hidden">
@@ -249,11 +247,13 @@ onBeforeUnmount(() => {
                             <div>
                                 <p class="font-semibold text-slate-900 dark:text-slate-100">{{ employee.full_name }}</p>
                                 <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ employee.email }}</p>
+                                <p class="mt-2 text-xs font-medium text-blue-700 dark:text-blue-300">{{ employee.department || 'Departemen belum diisi' }}</p>
                             </div>
-                            <span class="rounded-lg bg-white px-3 py-1 text-xs font-medium text-slate-600 shadow-sm dark:bg-slate-800 dark:text-slate-300">
+                            <span class="rounded-lg bg-white px-3 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">
                                 {{ employee.id_number }}
                             </span>
                         </div>
+                        <p class="mt-3 text-sm text-slate-500 dark:text-slate-400">{{ employee.address || 'Alamat belum diisi.' }}</p>
                         <p class="mt-4 text-sm text-slate-500 dark:text-slate-400">Dibuat: {{ formatDateTime(employee.created_at) }}</p>
                         <div class="mt-4 grid grid-cols-2 gap-3">
                             <button type="button" class="rounded-lg border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:bg-white dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800" @click="startEdit(employee)">
@@ -275,7 +275,9 @@ onBeforeUnmount(() => {
                             <tr>
                                 <th class="py-3 pe-4 font-medium">Nomor ID</th>
                                 <th class="py-3 pe-4 font-medium">Nama</th>
+                                <th class="py-3 pe-4 font-medium">Departemen</th>
                                 <th class="py-3 pe-4 font-medium">Email</th>
+                                <th class="py-3 pe-4 font-medium">Alamat</th>
                                 <th class="py-3 pe-4 font-medium">Dibuat</th>
                                 <th class="py-3 pe-4 font-medium">Aksi</th>
                             </tr>
@@ -284,7 +286,9 @@ onBeforeUnmount(() => {
                             <tr v-for="employee in employees.data" :key="employee.id">
                                 <td class="py-4 pe-4 font-medium text-slate-900 dark:text-slate-100">{{ employee.id_number }}</td>
                                 <td class="py-4 pe-4">{{ employee.full_name }}</td>
+                                <td class="py-4 pe-4">{{ employee.department || '-' }}</td>
                                 <td class="py-4 pe-4">{{ employee.email }}</td>
+                                <td class="max-w-xs whitespace-normal break-words py-4 pe-4">{{ employee.address || '-' }}</td>
                                 <td class="py-4 pe-4">{{ formatDateTime(employee.created_at) }}</td>
                                 <td class="py-4 pe-4">
                                     <div class="flex items-center gap-2">
@@ -298,7 +302,7 @@ onBeforeUnmount(() => {
                                 </td>
                             </tr>
                             <tr v-if="employees.data.length === 0">
-                                <td colspan="5" class="py-8 text-center text-slate-500 dark:text-slate-400">Data karyawan belum ada.</td>
+                                <td colspan="7" class="py-8 text-center text-slate-500 dark:text-slate-400">Data karyawan belum ada.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -351,10 +355,22 @@ onBeforeUnmount(() => {
                             <input v-model="employeeForm.full_name" type="text" :class="inputClass(!!employeeForm.errors.full_name)" required />
                             <p v-if="employeeForm.errors.full_name" class="mt-2 text-xs text-rose-600 dark:text-rose-300">{{ employeeForm.errors.full_name }}</p>
                         </div>
+                        <div class="grid gap-4 sm:grid-cols-2">
+                            <div>
+                                <label class="text-sm font-medium text-slate-700 dark:text-slate-300">Departemen</label>
+                                <input v-model="employeeForm.department" type="text" :class="inputClass(!!employeeForm.errors.department)" placeholder="Contoh: Operasional Tambang" />
+                                <p v-if="employeeForm.errors.department" class="mt-2 text-xs text-rose-600 dark:text-rose-300">{{ employeeForm.errors.department }}</p>
+                            </div>
+                            <div>
+                                <label class="text-sm font-medium text-slate-700 dark:text-slate-300">Email</label>
+                                <input v-model="employeeForm.email" type="email" :class="inputClass(!!employeeForm.errors.email)" required />
+                                <p v-if="employeeForm.errors.email" class="mt-2 text-xs text-rose-600 dark:text-rose-300">{{ employeeForm.errors.email }}</p>
+                            </div>
+                        </div>
                         <div>
-                            <label class="text-sm font-medium text-slate-700 dark:text-slate-300">Email</label>
-                            <input v-model="employeeForm.email" type="email" :class="inputClass(!!employeeForm.errors.email)" required />
-                            <p v-if="employeeForm.errors.email" class="mt-2 text-xs text-rose-600 dark:text-rose-300">{{ employeeForm.errors.email }}</p>
+                            <label class="text-sm font-medium text-slate-700 dark:text-slate-300">Alamat</label>
+                            <textarea v-model="employeeForm.address" rows="3" :class="inputClass(!!employeeForm.errors.address)" placeholder="Masukkan alamat lengkap"></textarea>
+                            <p v-if="employeeForm.errors.address" class="mt-2 text-xs text-rose-600 dark:text-rose-300">{{ employeeForm.errors.address }}</p>
                         </div>
                         <div v-if="!isEditMode" class="grid gap-4 sm:grid-cols-2">
                             <div>

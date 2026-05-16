@@ -5,6 +5,28 @@
 @layer base {
     :root {
         color-scheme: light;
+        --brand-blue-50: #eff6ff;
+        --brand-blue-100: #dbeafe;
+        --brand-blue-200: #bfdbfe;
+        --brand-blue-300: #93c5fd;
+        --brand-blue-500: #2563eb;
+        --brand-blue-600: #1d4ed8;
+        --brand-blue-700: #1e40af;
+        --brand-blue-800: #1e3a8a;
+        --brand-blue-950: #172554;
+        --brand-red-50: #fef2f2;
+        --brand-red-100: #fee2e2;
+        --brand-red-200: #fecaca;
+        --brand-red-500: #ef4444;
+        --brand-red-600: #dc2626;
+        --brand-red-700: #b91c1c;
+        --brand-surface: #ffffff;
+        --brand-page: #f7fbff;
+        --brand-3d-blue-shadow: rgba(30, 64, 175, 0.16);
+        --brand-3d-blue-deep: rgba(23, 37, 84, 0.12);
+        --brand-3d-red-glow: rgba(220, 38, 38, 0.12);
+        --brand-edge-blue: #2563eb;
+        --brand-edge-red: #dc2626;
     }
 
     :root.dark {
@@ -14,12 +36,12 @@
 
 @layer utilities {
     .mining-dashboard-bg {
-        background-color: #e6ebdf;
+        background-color: var(--brand-page);
         background-image:
-            repeating-radial-gradient(ellipse at 13% 10%, rgba(120, 53, 15, 0.18) 0 2px, transparent 2px 24px),
-            repeating-linear-gradient(145deg, rgba(30, 41, 59, 0.08) 0 2px, transparent 2px 26px),
-            radial-gradient(circle at 82% 12%, rgba(245, 158, 11, 0.24) 0 11rem, transparent 11.5rem),
-            linear-gradient(180deg, #f7f5eb 0%, #edf1e7 46%, #e0ded0 100%);
+            linear-gradient(120deg, rgba(37, 99, 235, 0.16) 0 11%, transparent 11% 58%, rgba(220, 38, 38, 0.12) 58% 72%, transparent 72% 100%),
+            repeating-linear-gradient(90deg, rgba(37, 99, 235, 0.10) 0 1px, transparent 1px 32px),
+            repeating-linear-gradient(0deg, rgba(220, 38, 38, 0.07) 0 1px, transparent 1px 32px),
+            linear-gradient(180deg, #ffffff 0%, #f7fbff 48%, #eef5ff 100%);
         background-attachment: fixed;
     }
 
@@ -27,14 +49,16 @@
         position: relative;
         isolation: isolate;
         overflow: hidden;
-        background-color: #eaf0e7;
+        perspective: 1400px;
+        background-color: var(--brand-page);
         background-image:
-            linear-gradient(90deg, rgba(15, 23, 42, 0.045) 1px, transparent 1px),
-            linear-gradient(0deg, rgba(15, 23, 42, 0.045) 1px, transparent 1px),
-            linear-gradient(135deg, rgba(20, 184, 166, 0.10) 0 1px, transparent 1px 18px),
-            linear-gradient(180deg, rgba(249, 251, 247, 0.94), rgba(231, 238, 228, 0.96));
-        background-position: center top, center top, 0 0, 0 0;
-        background-size: 40px 40px, 40px 40px, 18px 18px, auto;
+            linear-gradient(115deg, rgba(37, 99, 235, 0.11), transparent 34%, rgba(220, 38, 38, 0.10) 72%, transparent 100%),
+            linear-gradient(90deg, rgba(37, 99, 235, 0.12) 1px, transparent 1px),
+            linear-gradient(0deg, rgba(220, 38, 38, 0.09) 1px, transparent 1px),
+            repeating-linear-gradient(135deg, rgba(37, 99, 235, 0.07) 0 1px, transparent 1px 22px, rgba(220, 38, 38, 0.06) 22px 23px, transparent 23px 44px),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(239, 246, 255, 0.94));
+        background-position: center top, center top, center top, 0 0, 0 0;
+        background-size: auto, 44px 44px, 44px 44px, 44px 44px, auto;
     }
 
     .mining-content-bg::before {
@@ -44,18 +68,124 @@
         z-index: -1;
         pointer-events: none;
         background-image:
-            linear-gradient(90deg, transparent 0 calc(100% - 1px), rgba(20, 184, 166, 0.12) calc(100% - 1px) 100%),
-            linear-gradient(0deg, transparent 0 calc(100% - 1px), rgba(202, 138, 4, 0.16) calc(100% - 1px) 100%),
-            linear-gradient(135deg, transparent 0 46%, rgba(15, 23, 42, 0.05) 46% 47%, transparent 47% 100%),
-            radial-gradient(circle at 24px 24px, rgba(15, 23, 42, 0.10) 0 1px, transparent 1.5px);
+            linear-gradient(90deg, transparent 0 calc(100% - 1px), rgba(37, 99, 235, 0.20) calc(100% - 1px) 100%),
+            linear-gradient(0deg, transparent 0 calc(100% - 1px), rgba(220, 38, 38, 0.17) calc(100% - 1px) 100%),
+            repeating-linear-gradient(135deg, transparent 0 18px, rgba(37, 99, 235, 0.075) 18px 19px, transparent 19px 38px),
+            repeating-linear-gradient(45deg, transparent 0 28px, rgba(220, 38, 38, 0.065) 28px 29px, transparent 29px 58px);
         background-position: -1px -1px, -1px -1px, right -8rem top -4rem, 0 0;
-        background-size: 18rem 8rem, 18rem 8rem, 32rem 32rem, 48px 48px;
-        opacity: 0.82;
+        background-size: 18rem 8rem, 18rem 8rem, 32rem 32rem, 58px 58px;
+        opacity: 0.9;
     }
 
     .mining-content-bg > * {
         position: relative;
         z-index: 1;
+    }
+
+    :is(section, article, form, div):is(
+        [class~="rounded-lg"],
+        [class~="rounded-xl"],
+        [class~="sm:rounded-3xl"]
+    ):is(
+        [class~="bg-white"],
+        [class~="bg-white/80"],
+        [class~="bg-white/90"],
+        [class~="bg-white/95"],
+        [class~="bg-slate-50"],
+        [class~="bg-gray-50"]
+    )[class*="border"] {
+        --brand-card-bg: rgba(255, 255, 255, 0.98);
+        position: relative;
+        transform: translateZ(0);
+        transition:
+            transform 180ms ease,
+            border-color 180ms ease;
+        border-color: rgba(37, 99, 235, 0.28);
+        background:
+            linear-gradient(var(--brand-edge-blue), var(--brand-edge-blue)) left top / 100% 4px no-repeat,
+            linear-gradient(var(--brand-edge-red), var(--brand-edge-red)) left top / 4px 100% no-repeat,
+            linear-gradient(180deg, rgba(255, 255, 255, 0.99), var(--brand-card-bg));
+    }
+
+    :is(section, article, form, div):is(
+        [class~="rounded-lg"],
+        [class~="rounded-xl"],
+        [class~="sm:rounded-3xl"]
+    ):is(
+        [class~="bg-white"],
+        [class~="bg-white/80"],
+        [class~="bg-white/90"],
+        [class~="bg-white/95"],
+        [class~="bg-slate-50"],
+        [class~="bg-gray-50"]
+    )[class*="border"]:hover {
+        transform: translateY(-2px) translateZ(0);
+        border-color: rgba(37, 99, 235, 0.42);
+    }
+
+    :is(section, article, form, div):is(
+        [class~="rounded-lg"],
+        [class~="rounded-xl"]
+    ):is(
+        [class~="bg-slate-50"],
+        [class~="bg-gray-50"]
+    )[class*="border"] {
+        --brand-card-bg: rgba(248, 250, 252, 0.94);
+    }
+
+    :is(button, a):is([class*="border"]):not([class*="border-red"]) {
+        border-color: rgba(37, 99, 235, 0.48);
+        transition:
+            transform 160ms ease,
+            outline-color 160ms ease,
+            outline-offset 160ms ease,
+            border-color 160ms ease,
+            background-color 160ms ease;
+        box-shadow: none;
+    }
+
+    :is(button, a):is([class*="border"]):not([class*="border-red"]):is(:hover, :focus, :focus-visible) {
+        border-color: rgba(37, 99, 235, 0.72);
+        box-shadow: none;
+        outline: 2px solid rgba(147, 197, 253, 0.52);
+        outline-offset: 2px;
+    }
+
+    :is(button, a):is([class*="border"]):not([class*="border-red"]):hover {
+        transform: translateY(-1px);
+    }
+
+    :is(button, a):is([class*="border"]):not([class*="border-red"]):active {
+        transform: translateY(1px);
+        box-shadow: none;
+    }
+
+    :is(button, a):is(
+        [class~="bg-red-600"],
+        [class~="bg-rose-600"],
+        [class~="bg-rose-500"]
+    ) {
+        border-color: rgba(220, 38, 38, 0.78);
+        box-shadow: none;
+    }
+
+    :is(button, a):is(
+        [class~="bg-red-600"],
+        [class~="bg-rose-600"],
+        [class~="bg-rose-500"]
+    ):hover {
+        transform: translateY(-1px);
+        border-color: rgba(185, 28, 28, 0.88);
+        box-shadow: none;
+    }
+
+    :is(button, a):is(
+        [class~="bg-red-600"],
+        [class~="bg-rose-600"],
+        [class~="bg-rose-500"]
+    ):active {
+        transform: translateY(1px);
+        box-shadow: none;
     }
 
     .mining-content-bg :is(
@@ -76,11 +206,13 @@
 
     .mining-content-bg :is(
         [class~="border-slate-200"],
+        [class~="border-blue-100"],
+        [class~="border-blue-200"],
         [class~="border-gray-100"],
         [class~="border-gray-200"],
         [class~="border-gray-300"]
     ) {
-        border-color: rgba(100, 116, 139, 0.36);
+        border-color: rgba(147, 197, 253, 0.72);
     }
 
     .mining-content-bg :is(section, article, form, div):is(
@@ -91,8 +223,314 @@
         [class~="bg-slate-50"],
         [class~="bg-gray-50"]
     )[class*="border"] {
-        box-shadow:
-            0 14px 36px rgba(15, 23, 42, 0.08),
-            0 2px 8px rgba(15, 23, 42, 0.05);
+        --brand-card-bg: rgba(255, 255, 255, 0.98);
+        position: relative;
+        transform: translateZ(0);
+        transition:
+            transform 180ms ease,
+            border-color 180ms ease;
+        border-color: rgba(37, 99, 235, 0.28);
+        background:
+            linear-gradient(var(--brand-edge-blue), var(--brand-edge-blue)) left top / 100% 4px no-repeat,
+            linear-gradient(var(--brand-edge-red), var(--brand-edge-red)) left top / 4px 100% no-repeat,
+            linear-gradient(180deg, rgba(255, 255, 255, 0.99), var(--brand-card-bg));
     }
+
+    .mining-content-bg :is(section, article, form, div):is(
+        [class~="bg-white"],
+        [class~="bg-white/80"],
+        [class~="bg-white/90"],
+        [class~="bg-white/95"],
+        [class~="bg-slate-50"],
+        [class~="bg-gray-50"]
+    )[class*="border"]:hover {
+        transform: translateY(-2px) translateZ(0);
+        border-color: rgba(37, 99, 235, 0.42);
+    }
+
+    .mining-content-bg :is(section, article, form, div):is(
+        [class~="bg-slate-50"],
+        [class~="bg-gray-50"]
+    )[class*="border"] {
+        --brand-card-bg: rgba(248, 250, 252, 0.94);
+    }
+
+    .mining-content-bg :is(button, a):is([class*="border"]):not([class*="border-red"]) {
+        border-color: rgba(37, 99, 235, 0.48);
+        transition:
+            transform 160ms ease,
+            outline-color 160ms ease,
+            outline-offset 160ms ease,
+            border-color 160ms ease,
+            background-color 160ms ease;
+        box-shadow: none;
+    }
+
+    .mining-content-bg :is(button, a):is([class*="border"]):not([class*="border-red"]):is(:hover, :focus, :focus-visible) {
+        border-color: rgba(37, 99, 235, 0.72);
+        box-shadow: none;
+        outline: 2px solid rgba(147, 197, 253, 0.52);
+        outline-offset: 2px;
+    }
+
+    .mining-content-bg :is(button, a):is([class*="border"]):not([class*="border-red"]):hover {
+        transform: translateY(-1px);
+    }
+
+    .mining-content-bg :is(button, a):is([class*="border"]):not([class*="border-red"]):active {
+        transform: translateY(1px);
+        box-shadow: none;
+    }
+
+    .mining-content-bg :is(button, a):is(
+        [class~="bg-red-600"],
+        [class~="bg-rose-600"],
+        [class~="bg-rose-500"]
+    ) {
+        border-color: rgba(220, 38, 38, 0.78);
+        box-shadow: none;
+    }
+
+    .mining-content-bg :is(button, a):is(
+        [class~="bg-red-600"],
+        [class~="bg-rose-600"],
+        [class~="bg-rose-500"]
+    ):hover {
+        transform: translateY(-1px);
+        border-color: rgba(185, 28, 28, 0.88);
+        box-shadow: none;
+    }
+
+    .mining-content-bg :is(button, a):is(
+        [class~="bg-red-600"],
+        [class~="bg-rose-600"],
+        [class~="bg-rose-500"]
+    ):active {
+        transform: translateY(1px);
+        box-shadow: none;
+    }
+
+    :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), select, textarea):is([class*="border"]) {
+        --tw-ring-offset-shadow: 0 0 #0000 !important;
+        --tw-ring-shadow: 0 0 #0000 !important;
+        --tw-shadow: 0 0 #0000 !important;
+        border-color: rgba(37, 99, 235, 0.42);
+        outline: 1px solid transparent;
+        outline-offset: 0;
+        box-shadow: none !important;
+        background-clip: padding-box;
+        transition:
+            border-color 160ms ease,
+            outline-color 160ms ease,
+            outline-offset 160ms ease,
+            background-color 160ms ease;
+    }
+
+    :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), select, textarea):is([class*="border"]):hover {
+        border-color: rgba(37, 99, 235, 0.64);
+        outline-color: transparent;
+        outline-offset: 0;
+    }
+
+    :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), select, textarea):is([class*="border"]):is(:focus, :focus-visible, :active) {
+        border-color: var(--brand-blue-700);
+        outline: 2px solid rgba(29, 78, 216, 0.92);
+        outline-offset: 1px;
+        box-shadow: none !important;
+    }
+
+    :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), select, textarea):is([class*="border-rose"], [class*="border-red"]) {
+        border-color: rgba(220, 38, 38, 0.64);
+    }
+
+    :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), select, textarea):is([class*="border-rose"], [class*="border-red"]):is(:focus, :focus-visible, :active) {
+        border-color: var(--brand-red-600);
+        outline-color: rgba(220, 38, 38, 0.92);
+    }
+
+    :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), select, textarea):disabled {
+        border-color: rgba(147, 197, 253, 0.52);
+        outline-color: transparent;
+        background-color: rgba(239, 246, 255, 0.72);
+        cursor: not-allowed;
+    }
+
+    :is(input[type="checkbox"], input[type="radio"]) {
+        --tw-ring-offset-shadow: 0 0 #0000 !important;
+        --tw-ring-shadow: 0 0 #0000 !important;
+        --tw-shadow: 0 0 #0000 !important;
+        box-shadow: none !important;
+    }
+
+    :is(input[type="checkbox"], input[type="radio"]):focus-visible {
+        outline: 2px solid rgba(37, 99, 235, 0.32);
+        outline-offset: 3px;
+    }
+}
+
+/*
+    Brand color migration:
+    keep the interface light, move legacy black/yellow/green accents into
+    a professional white, blue, and red palette without changing every page.
+*/
+[class~="bg-slate-950"] {
+    background-color: var(--brand-blue-950);
+}
+
+[class~="bg-slate-900"] {
+    background-color: var(--brand-blue-700);
+}
+
+[class~="border-slate-950"],
+[class~="border-slate-900"] {
+    border-color: var(--brand-blue-700);
+}
+
+[class~="hover:bg-slate-800"]:hover,
+[class~="hover:bg-slate-700"]:hover {
+    background-color: var(--brand-blue-800);
+}
+
+[class~="bg-slate-950/55"] {
+    background-color: rgba(23, 37, 84, 0.60);
+}
+
+[class~="bg-slate-950/70"] {
+    background-color: rgba(23, 37, 84, 0.72);
+}
+
+[class~="bg-slate-900/50"] {
+    background-color: rgba(30, 64, 175, 0.48);
+}
+
+[class~="bg-slate-950/85"] {
+    background-color: rgba(23, 37, 84, 0.88);
+}
+
+[class~="bg-amber-50"],
+[class~="bg-amber-100"],
+[class~="bg-emerald-50"],
+[class~="bg-emerald-100"],
+[class~="bg-green-50"],
+[class~="bg-green-100"],
+[class~="bg-sky-50"],
+[class~="bg-sky-100"] {
+    background-color: var(--brand-blue-50);
+}
+
+[class~="border-amber-200"],
+[class~="border-emerald-200"],
+[class~="border-green-200"],
+[class~="border-sky-200"] {
+    border-color: var(--brand-blue-200);
+}
+
+[class~="text-amber-600"],
+[class~="text-amber-700"],
+[class~="text-amber-800"],
+[class~="text-amber-900"],
+[class~="text-emerald-500"],
+[class~="text-emerald-700"],
+[class~="text-emerald-900"],
+[class~="text-green-500"],
+[class~="text-green-600"],
+[class~="text-green-700"],
+[class~="text-green-900"],
+[class~="text-sky-500"],
+[class~="text-sky-700"],
+[class~="text-sky-800"],
+[class~="text-sky-900"],
+[class~="text-indigo-600"] {
+    color: var(--brand-blue-600);
+}
+
+[class~="hover:text-amber-950"]:hover {
+    color: var(--brand-blue-700);
+}
+
+[class~="bg-amber-400"],
+[class~="bg-amber-500"],
+[class~="bg-emerald-600"],
+[class~="bg-green-600"],
+[class~="bg-sky-600"] {
+    background-color: var(--brand-blue-600);
+}
+
+[class~="hover:bg-amber-300"]:hover,
+[class~="hover:bg-amber-400"]:hover,
+[class~="hover:bg-emerald-500"]:hover,
+[class~="hover:bg-emerald-700"]:hover,
+[class~="hover:bg-green-700"]:hover,
+[class~="hover:bg-sky-700"]:hover {
+    background-color: var(--brand-blue-700);
+}
+
+[class~="bg-rose-50"],
+[class~="bg-rose-100"] {
+    background-color: var(--brand-red-50);
+}
+
+[class~="border-rose-200"],
+[class~="border-rose-300"] {
+    border-color: var(--brand-red-200);
+}
+
+[class~="bg-rose-500"],
+[class~="bg-rose-600"] {
+    background-color: var(--brand-red-600);
+}
+
+[class~="hover:bg-rose-400"]:hover,
+[class~="hover:bg-rose-500"]:hover,
+[class~="hover:bg-rose-700"]:hover {
+    background-color: var(--brand-red-700);
+}
+
+[class~="text-rose-300"],
+[class~="text-rose-500"],
+[class~="text-rose-600"],
+[class~="text-rose-700"],
+[class~="text-rose-900"] {
+    color: var(--brand-red-600);
+}
+
+[class~="accent-amber-500"],
+[class~="accent-emerald-600"],
+[class~="accent-blue-500"] {
+    accent-color: var(--brand-blue-600);
+}
+
+[class~="focus:border-amber-400"]:focus,
+[class~="focus:border-amber-500"]:focus {
+    border-color: var(--brand-blue-500);
+}
+
+[class~="focus:ring-amber-100"]:focus,
+[class~="focus:ring-indigo-500"]:focus,
+[class~="focus:ring-blue-100"]:focus {
+    --tw-ring-color: rgba(147, 197, 253, 0.55);
+}
+
+[class~="file:bg-slate-900"]::file-selector-button {
+    background-color: var(--brand-blue-600);
+}
+
+[class~="hover:file:bg-slate-800"]:hover::file-selector-button {
+    background-color: var(--brand-blue-700);
+}
+
+[class*="shadow"] {
+    --tw-shadow: 0 0 #0000 !important;
+    --tw-shadow-colored: 0 0 #0000 !important;
+    box-shadow: none !important;
+}
+
+[class*="drop-shadow"] {
+    --tw-drop-shadow: none !important;
+    filter: none !important;
+}
+
+:is(section, article, form, div, button, a, input, select, textarea):is([class*="border"]),
+:is(section, article, form, div, button, a, input, select, textarea):is([class*="border"]):is(:hover, :focus, :focus-visible, :active) {
+    box-shadow: none !important;
 }

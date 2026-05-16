@@ -18,6 +18,8 @@ const user = usePage().props.auth.user;
 
 const form = useForm({
     full_name: user.full_name,
+    department: user.department ?? '',
+    address: user.address ?? '',
     email: user.email,
 });
 </script>
@@ -28,40 +30,70 @@ const form = useForm({
             <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100">Informasi Profil</h2>
 
             <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                Perbarui informasi profil dan alamat email akun Anda.
+                Perbarui informasi profil, departemen, alamat, dan email akun Anda.
             </p>
         </header>
 
         <form @submit.prevent="form.patch(route('profile.update'))" class="mt-6 space-y-6">
-            <div>
-                <InputLabel for="full_name" value="Nama Lengkap" />
+            <div class="grid gap-x-5 gap-y-6 lg:grid-cols-2">
+                <div>
+                    <InputLabel for="full_name" value="Nama Lengkap" />
 
-                <TextInput
-                    id="full_name"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.full_name"
-                    required
-                    autofocus
-                    autocomplete="name"
-                />
+                    <TextInput
+                        id="full_name"
+                        type="text"
+                        class="mt-1 block w-full"
+                        v-model="form.full_name"
+                        required
+                        autofocus
+                        autocomplete="name"
+                    />
 
-                <InputError class="mt-2" :message="form.errors.full_name" />
-            </div>
+                    <InputError class="mt-2" :message="form.errors.full_name" />
+                </div>
 
-            <div>
-                <InputLabel for="email" value="Email" />
+                <div>
+                    <InputLabel for="department" value="Departemen" />
 
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autocomplete="username"
-                />
+                    <TextInput
+                        id="department"
+                        type="text"
+                        class="mt-1 block w-full"
+                        v-model="form.department"
+                        autocomplete="organization"
+                    />
 
-                <InputError class="mt-2" :message="form.errors.email" />
+                    <InputError class="mt-2" :message="form.errors.department" />
+                </div>
+
+                <div>
+                    <InputLabel for="email" value="Email" />
+
+                    <TextInput
+                        id="email"
+                        type="email"
+                        class="mt-1 block w-full"
+                        v-model="form.email"
+                        required
+                        autocomplete="username"
+                    />
+
+                    <InputError class="mt-2" :message="form.errors.email" />
+                </div>
+
+                <div class="lg:col-span-2">
+                    <InputLabel for="address" value="Alamat" />
+
+                    <textarea
+                        id="address"
+                        v-model="form.address"
+                        rows="3"
+                        class="mt-1 block w-full rounded-lg border border-blue-100 bg-white px-4 py-3 text-sm text-slate-900 transition placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-100 dark:border-blue-200 dark:bg-white dark:text-slate-900 dark:placeholder:text-slate-500 dark:focus:ring-blue-500/10"
+                        autocomplete="street-address"
+                    ></textarea>
+
+                    <InputError class="mt-2" :message="form.errors.address" />
+                </div>
             </div>
 
             <div v-if="mustVerifyEmail && user.email_verified_at === null">
